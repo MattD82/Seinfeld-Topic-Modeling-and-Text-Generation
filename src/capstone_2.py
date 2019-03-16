@@ -21,6 +21,8 @@ import string
 # plotting functions
 from plotting_functions import plot_lines_spoken
 
+# Sentiment Analysis
+#from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
 '''
 This is the main python script for capstone 2, looking at a database of Seinfeld scripts
@@ -28,8 +30,8 @@ This is the main python script for capstone 2, looking at a database of Seinfeld
 '''
 
 def load_data():
-    df_info = pd.read_csv('../data/seinfeld-chronicles/episode_info.csv')
-    df_scripts = pd.read_csv('../data/seinfeld-chronicles/scripts.csv')
+    df_info = pd.read_csv('/Users/mattdevor/galvanize/capstone_2/data/seinfeld-chronicles/episode_info.csv', index_col=0)
+    df_scripts = pd.read_csv('/Users/mattdevor/galvanize/capstone_2/data/seinfeld-chronicles/scripts.csv', index_col=0)
 
     # Fix season 1 episode 0 issue
     df_scripts.EpisodeNo = np.where(df_scripts.SEID =='S01E00', 0.0, df_scripts.EpisodeNo)
@@ -100,7 +102,7 @@ def agg_dialogue_by_episode(df_scripts, df_info):
     
     index = 0
     for SEID in df_scripts['SEID'].unique():
-        dialogue = df_scripts[df_scripts['SEID']==SEID]['Dialogue'].to_list()
+        dialogue = ' '.join(df_scripts[df_scripts['SEID']==SEID]['Dialogue'].to_list())
         lines_of_dialogue = df_scripts[df_scripts['SEID']==SEID]['EpisodeNo'].count()
         season = df_scripts[df_scripts['SEID']==SEID]['Season'].unique()[0]
         episode = df_scripts[df_scripts['SEID']==SEID]['EpisodeNo'].unique()[0]
@@ -109,7 +111,7 @@ def agg_dialogue_by_episode(df_scripts, df_info):
         
         index += 1
 
-    merged = pd.merge(df_new, df_info.iloc[:,3:], on=['SEID']).reset_index(drop=True)
+    merged = pd.merge(df_new, df_info.iloc[:,2:], on=['SEID']).reset_index(drop=True)
 
     return merged
 
@@ -174,23 +176,23 @@ if __name__=="__main__":
 
     ### LDA __TO DO __
     # create count vectorizor matrix, for comparison
-    corpus = 
+    # corpus = 
 
-    count = CountVectorizer(stop_words=stop_words, max_features=1000, max_df = 0.85,  min_df=2)
-    tf = count.fit_transform(corpus)
-    tf = sp.csr_matrix.toarray(tf)
+    # count = CountVectorizer(stop_words=stop_words, max_features=1000, max_df = 0.85,  min_df=2)
+    # tf = count.fit_transform(corpus)
+    # tf = sp.csr_matrix.toarray(tf)
     
-    num_topics = 10
-    lda = LatentDirichletAllocation(n_components=num_topics, max_iter=5, learning_method='online',random_state=32, n_jobs=-1)
-    lda.fit(tf)
+    # num_topics = 10
+    # lda = LatentDirichletAllocation(n_components=num_topics, max_iter=5, learning_method='online',random_state=32, n_jobs=-1)
+    # lda.fit(tf)
 
-    # phi is topics as rows and features as columns, which is the same as lda.components
-    phi = lda.components_
-    print(lda.components_.shape)
+    # # phi is topics as rows and features as columns, which is the same as lda.components
+    # phi = lda.components_
+    # print(lda.components_.shape)
 
-    #theses are the words in our bag of words
-    tf_feature_names = count.get_feature_names() 
+    # #theses are the words in our bag of words
+    # tf_feature_names = count.get_feature_names() 
 
-    num_top_words = 10
-    display_topics(lda, tf_feature_names, num_top_words)
+    # num_top_words = 10
+    # display_topics(lda, tf_feature_names, num_top_words)
     
