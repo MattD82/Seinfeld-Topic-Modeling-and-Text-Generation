@@ -38,6 +38,8 @@ I discovered a database containing scripts for every Seinfeld episode, with dial
 
 ![](images/lda_sklearn_wordcloud.png)
 
+![](images/lda_gif.gif)
+
 [Back to Top](#Table-of-Contents)
 
 # Strategy and Process
