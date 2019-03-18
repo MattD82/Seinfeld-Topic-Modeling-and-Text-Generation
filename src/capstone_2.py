@@ -103,7 +103,7 @@ def agg_dialogue_by_episode(df_scripts, df_info):
     index = 0
     for SEID in df_scripts['SEID'].unique():
         dialogue = ' '.join(df_scripts[df_scripts['SEID']==SEID]['Dialogue'].to_list())
-        lines_of_dialogue = df_scripts[df_scripts['SEID']==SEID]['EpisodeNo'].count()
+        lines_of_dialogue = int(df_scripts[df_scripts['SEID']==SEID]['EpisodeNo'].count())
         season = df_scripts[df_scripts['SEID']==SEID]['Season'].unique()[0]
         episode = df_scripts[df_scripts['SEID']==SEID]['EpisodeNo'].unique()[0]
         
@@ -112,6 +112,8 @@ def agg_dialogue_by_episode(df_scripts, df_info):
         index += 1
 
     merged = pd.merge(df_new, df_info.iloc[:,2:], on=['SEID']).reset_index(drop=True)
+
+    merged['Lines_of_Dialogue'] = merged['Lines_of_Dialogue'].astype(int)
 
     return merged
 
@@ -196,3 +198,4 @@ if __name__=="__main__":
     # num_top_words = 10
     # display_topics(lda, tf_feature_names, num_top_words)
     
+    print(df_docs_by_ep.info())
