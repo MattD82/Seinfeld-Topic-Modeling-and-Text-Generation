@@ -96,6 +96,9 @@ def get_corpus_char_SEID(df_scripts, character, SEID):
 
 
 def agg_dialogue_by_episode(df_scripts, df_info):
+    df_scripts = df_scripts.copy()
+    df_info = df_info.copy()
+
     all_documents = []
     df_cols = ['Dialogue', 'Lines_of_Dialogue', 'SEID', 'Season', 'Episode']
     df_new = pd.DataFrame(columns = df_cols)
@@ -116,6 +119,10 @@ def agg_dialogue_by_episode(df_scripts, df_info):
     merged['Lines_of_Dialogue'] = merged['Lines_of_Dialogue'].astype(int)
 
     return merged
+
+def create_corpus_of_espisodes(df_docs_by_ep):
+    df_docs_by_ep = df_docs_by_ep.copy()
+    return df_docs_by_ep.Dialogue.values
 
 if __name__=="__main__":
     df_info, df_scripts = load_data()
@@ -199,3 +206,4 @@ if __name__=="__main__":
     # display_topics(lda, tf_feature_names, num_top_words)
     
     print(df_docs_by_ep.info())
+    print(df_docs_by_ep.head())

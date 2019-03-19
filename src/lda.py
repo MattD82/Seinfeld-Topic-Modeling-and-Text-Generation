@@ -25,16 +25,19 @@ import matplotlib.gridspec as gridspec
 import capstone_2 as cap 
 
 
-class TopicModeler(object):
+class SklearnTopicModeler(object):
     '''
-    Uses sklearn LDA or NMF to model topics within the Seinfeld script corpus.
-    Right now can handle tf or tf-idf matrices
+    Uses sklearn LDA to model topics within the Seinfeld script corpus.
+    This should be easily generalizable to any corpus
+    Right uses tf matrices created using CountVectorizer 
     '''
-    def __init__(self, model, vectorizer, distance_func):
-        self.model = model
-        self.vectorizer = vectorizer
-        self.script_text = None
-        self.episode_titles = None
+    def __init__(self, corpus):
+        self.corpus = corpus
+
+    def clean_vectorize(self):
+        # remove single quotes and convert to lower case
+        self.corpus = [re.sub("\'", "", sent) for sent in self.corpus]
+        self.corpus = [sent.lower() for sent in self.corpus]
 
 def display_topics(model, feature_names, num_top_words):
     topic_dict = {}
@@ -77,13 +80,12 @@ def display_episodes_by_topics(theta, topic, titles, num_episodes):
     print("\n".join(titles[theta[:, topic].argsort()[::-1][:num_episodes]]))
     
 
+
 df_info, df_scripts = cap.load_data()
 df_docs_by_ep = cap.agg_dialogue_by_episode(df_scripts, df_info)
 corpus = df_docs_by_ep.Dialogue.values
 
-# remove single quotes and convert to lower case
-corpus = [re.sub("\'", "", sent) for sent in corpus]
-corpus = [sent.lower() for sent in corpus]
+
 
 # add to stop words
 #more_stop_words = ['ya', 'ha', 'mr', 'okay', 'ah'] #<--- REMOVING 'alright' really changed things!
