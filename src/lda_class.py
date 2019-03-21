@@ -1,4 +1,3 @@
-# the basics
 import pandas as pd
 import numpy as np
 
@@ -14,6 +13,7 @@ import scipy.sparse as sp
 import nltk
 from nltk.corpus import stopwords
 
+# import re for text cleaning
 import re
 
 # import wordcloud
@@ -22,27 +22,26 @@ from wordcloud import WordCloud, STOPWORDS
 import matplotlib.colors as mcolors
 import matplotlib.gridspec as gridspec
 
+# import data loading functions from main file
 import capstone_2 as cap 
-
 
 class SklearnTopicModeler(object):
     '''
-    Uses sklearn LDA to model topics within the Seinfeld script corpus.
-    This should be easily generalizable to any corpus of documents.
+    Uses sklearn LatentDirichletAllocation to model topics within the 
+    Seinfeld script corpus.
+    This class should be easily generalizable to any corpus of documents.
     Tokenized to tf matrices using sklearn's CountVectorizer. 
     '''
     def __init__(self, corpus, df_docs_by_ep):
         self.corpus = corpus
 
-        # get info for each episode from df_docs_by_ep
+        # get title info for each episode from df_docs_by_ep
         self.titles = df_docs_by_ep.Title.values
-        self.writers = df_docs_by_ep.Writers.values
-        self.seasons = df_docs_by_ep.Season.values
         
         # dataframe of documents (scripts) by episode
         self.df_docs_by_ep = df_docs_by_ep
 
-    def clean_vectorize(self):
+    def clean_vectorize(self, max_features=3000):
         # remove single quotes and convert to lower case
         self.corpus = [re.sub("\'", "", sent) for sent in self.corpus]
         self.corpus = [sent.lower() for sent in self.corpus]
@@ -58,7 +57,7 @@ class SklearnTopicModeler(object):
 
         # create tf matrix from corpus - note this removes additional punctuation automatically
         self.vectorizer = CountVectorizer(stop_words=self.stop_words, 
-                                          max_features=3000, 
+                                          max_features=max_features, 
                                           max_df = 0.85,  
                                           min_df=2)
         self.tf = self.vectorizer.fit_transform(self.corpus)
@@ -69,8 +68,6 @@ class SklearnTopicModeler(object):
 
     def fit_LDA(self, num_topics=10):
         # default to num_topics = 10 unless user changes. 
-        # 10 produced really interesting results.
-
         self.num_topics = num_topics
 
         # create LDA model using sklearn
@@ -91,6 +88,8 @@ class SklearnTopicModeler(object):
         return self.lda.perplexity(self.tf)
 
     def display_topics(self, num_top_words=10):
+        # display topic # and key words for each topic
+        # also, returns dictionar
         self.topic_dict = {}
         self.idx_dict = {}
         for topic_idx, topic in enumerate(self.phi):
@@ -104,6 +103,8 @@ class SklearnTopicModeler(object):
         return self.topic_dict, self.idx_dict
 
     def display_similar_episodes(self, index, num_episodes=5):
+        # allows the user to select an episode (by index), and displays
+        # num_espisodes similar episodes using cosine distance
         pd.options.display.max_colwidth = 100
         pd.options.display.max_columns = 50
 
@@ -120,6 +121,7 @@ class SklearnTopicModeler(object):
         print(self.df_docs_by_ep.iloc[indices_of_similar_episodes])
     
     def display_episodes_from_topic(self, topic, num_episodes):
+
         indices_of_similar_episodes = self.theta[:, topic].argsort()[::-1][:num_episodes]
 
         print("Topic Chosen is: {}".format(topic))
@@ -128,8 +130,10 @@ class SklearnTopicModeler(object):
         print(self.df_docs_by_ep.iloc[indices_of_similar_episodes])
 
     def plot_wordcloud(self, num_top_words=10):
-        # Choose number of words to display in each cloud
-
+        # plots a wordcloud for each topic in the LDA model
+        # num_top_words chooses number of words to display in each cloud
+        
+        # create dictionaries for word cloud
         topics, idxs = self.display_topics(num_top_words)
 
         tot_dict = {}
@@ -142,6 +146,7 @@ class SklearnTopicModeler(object):
                 new_dict[i] = t_dict
                 tot_dict.update(t_dict)
 
+        # create wordcloud object and plot
         cols = [color for name, color in mcolors.TABLEAU_COLORS.items()]
 
         cloud = WordCloud(stopwords=self.stop_words,
@@ -152,25 +157,9 @@ class SklearnTopicModeler(object):
                         color_func=lambda *args, **kwargs: cols[i],
                         prefer_horizontal=1.0)
 
-        # fig, axes = plt.subplots(4, 3, figsize=(20,20), sharex=True, sharey=True)
-
         fig = plt.figure(figsize=(6, 6)) 
 
         gs = gridspec.GridSpec(4, 3, wspace=0.0, hspace=0.2, top=0.95, bottom=0.01,left=0.05,right=0.95)        
-
-        # for i, ax in enumerate(axes.flatten()[:num_top_words]):
-        #     fig.add_subplot(ax)
-            
-        #     topic_words = new_dict[i]
-        #     cloud.generate_from_frequencies(topic_words, max_font_size=300)
-        #     plt.gca().imshow(cloud)
-        #     plt.gca().set_title('Topic ' + str(i), fontdict=dict(size=16))
-        #     plt.gca().axis('off')
-
-        # plt.subplots_adjust(wspace=0, hspace=0)
-        # plt.axis('off')
-        # plt.margins(x=0, y=0)
-        # plt.tight_layout()
 
         for i in range(num_top_words):
             ax = plt.subplot(gs[i])
@@ -185,7 +174,6 @@ class SklearnTopicModeler(object):
             ax.axis('off')
             ax.set_title('Topic ' + str(i), fontdict=dict(size=12))
 
-        #plt.tight_layout() # do not use this!!
         plt.show()
 
 
