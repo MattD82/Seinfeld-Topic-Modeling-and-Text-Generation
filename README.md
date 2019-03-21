@@ -31,11 +31,9 @@ Seinfeld is an American television sitcom that ran for nine seasons on NBC, from
 
 I have been a huge fan of this show for around two decades, and still find myself going back and enjoying old episodes. I think the writing is absolutely brilliant, still holds up (even if some of the references are dated), and really appreciate the way that Larry David in particular can transform seemingly mundane daily occurrences into entertaining dialogue. 
 
-I discovered a database containing scripts for every Seinfeld episode (located [here](https://www.kaggle.com/thec03u5/seinfeld-chronicles)), with dialogue separated by character. Since I hadn't had previously an opportunity to do a deep-dive with NLP, and because NLP has so many practical applications, I thought this would be a fun corpus to take on and try to extract meaning from. 
+I discovered a database containing scripts for every Seinfeld episode (located [here](https://www.kaggle.com/thec03u5/seinfeld-chronicles)), with dialogue separated by character. Since I hadn't previously had an opportunity to do a deep-dive with NLP, and because NLP has so many practical applications, I thought this would be a fun corpus to take on and try to extract meaning from. 
 
-Initially, I deiced to use LDA and sentiment analysis to better inform my EDA and understanding of the corpus. Unsupervised learning in the form of LDA can quickly turn into an almost endless feedback loop (which I soon realized), but I was able to at least extract some interesting themes, dialogue snippets, and catch phrases from that analysis.
-
-I also thought it would be a very interesting problem to try and see if I can train a model to emulate the speech patterns of the four main characters mentioned above, and even create a model that would “predict”/generate the script for a new episode of Seinfeld.
+Initially, I deiced to use LDA and sentiment analysis to better inform my EDA and understanding of the corpus. Unsupervised learning in the form of LDA can quickly turn into an almost endless feedback loop (which I soon realized), but I was able to at least extract some interesting themes, dialogue snippets, and catch phrases from that analysis. I also thought it would be a very interesting problem to try and see if I can train a model to emulate the speech patterns of the four main characters mentioned above, and even create a model that would “predict”/generate the script for a new episode of Seinfeld.
 
 
 [Back to Top](#Table-of-Contents)
@@ -44,7 +42,7 @@ I also thought it would be a very interesting problem to try and see if I can tr
 - Overview of Data
 - Exploratory Data Analysis
 - Unsupervised Learning: LDA - Sklearn
-- Unsupervised Learning: LDA - Gensim/Spacy
+- Unsupervised Learning: LDA - Gensim/spaCy
 - Sentiment Analysis with VADER
 - Text Generation
 - Reflection and Future Work
@@ -98,17 +96,15 @@ The other metric this graph shows is average number of alphanumeric characters, 
 # Unsupervised Learning: LDA with Sklearn
 Latent Dirichlet Allocation is an unsupervised modeling technique, used to derive (k=num_topics) latent topics from corpuses of text (collections of documents). There are many examples of real-world use cases for this technique, such as search engines, text to speech, classifying social media users, and many more.
 
-LDA takes an input matrix and breaks it 
+The LDA algorithm takes an input X matrix and creates phi and theta matrices, which relate to the input matrix as follows:
 
 | Matrix | Dimensions| Relates | Contains |
 |---|---|---|---|
-|X (input) | n x m | documents (n rows) to features/words (m columns) | Term frequency matrix of tokenized words and the number of times each word appears in each document. |
+|X (input) | n x m | documents (n rows) to features/words (m columns) | Term frequency matrix of tokenized words, i.e. the number of times each word appears in each document. |
 |φ (phi) | k x m | topics (k rows) to features/words (m columns) | Composition of topics, in terms of which words comprise each topic. All rows sum to 1. |
 |θ (theta) | n x k | documents (n rows) to topics (k columns) | Topic distribution within each document. Each document can contain multiple topics. All rows sum to 1. |
 
-As with any unsupervised modeling technique, as there is nothing we are really "predicting" with this approach, it is quite difficult to accurately evaluate an LDA model quantitatively. Much of the value gained from topic modeling, and LDA specifically, is the ability to come up with a human-comprehensible understanding of the topics the model spits out.
-
-While optimally this topic labelling can be done by looking at the most important keywords for each topic, it can still be quite difficult to separate topics into concrete "buckets".
+As with any unsupervised modeling technique, as there is nothing we are really "predicting" with this approach, it is quite difficult to accurately evaluate an LDA model quantitatively. Much of the value gained from topic modeling, and LDA specifically, is the ability to come up with a human-comprehensible understanding of the topics the model spits out. While optimally this topic labelling can be done by looking at the most important keywords for each topic, it can still be quite difficult to separate topics into concrete "buckets".
 
 I began topic modeling of this corpus by combining the lines of dialogue into one large block of text for each episode, therefore creating a "script" for each episode and each season. I then took the following steps to clean the data and feed it through sklearn's LDA model:
 - Corpus = dialogue for each episode
@@ -116,14 +112,13 @@ I began topic modeling of this corpus by combining the lines of dialogue into on
 - Convert corpus to lower case.
 - Initially, use NLTK's default stop words.
 - Use `CountVectorizer` to convert coprus into term frequency matrix for each document.
-- Choose num_topics
+- Choose k = num_topics
 - Create lda model using `LatentDirichletAllocation`
-- Look **manually** at most important key words for each topic and determine of those **make sense**. 
+- Look **manually** at most important key words for each topic and determine of those **make sense** and differentiate the topics well. 
 - If words are repeated often between topics, we're not seeing much differentiation.
-- Calculate perplexity or coherence.
 - Adjust stop words accordingly and repeat all steps above until you have an LDA model that is somewhat informative.
 
-After doing all of the steps above, I ended up with 10 topics, and the word cloud below shows the 10 most important keywords for each of those topics. These 10 topics were chosen because with only around 5 or 6 topics, I really wasn't seeing any differentiation between the keywords in each topic, and with more than 10 topics, due to the fact that the corpus only contains 174 episodes, I was seeing some topics that almost encompass only one episode/document.
+After doing all of the steps above, I ended up with 10 topics, and the word cloud below shows the 10 most important keywords for each of those topics. These 10 topics were chosen because with only around 5 or 6 topics, I really wasn't seeing any differentiation between the keywords in each topic, and with more than 10 topics, due to the fact that the corpus only contains 174 episodes, I was seeing some topics that almost only encompass one episode/document.
 
 Also, while this analysis didn't really produce any concrete "topics" that are generalizable to multiple episodes, it did pull out some key words and characters that are very episode-specific. For example, "Keith Hernandez" shows up in topic two, as does "latex", and in the episode "The Boyfriend", Jerry meets his idol, Keith Hernandez (former New York Mets baseball player), and George tells the unemployment office that he's close to a job with Vandelay Industries, a company he made up that makes latex products.
 
@@ -148,9 +143,7 @@ In order to have a more quantitative approach to evaluating an LDA model, I deci
 ![](images/coherence.png)
 
 
-From the chart above, it appeared that 14 topics resulted in a good balance between number of topics and coherence score, as coherence score didn't increase much after that.
-
-As such, I then re-ran the gensim LDA model with 14 topics, and the gif below is a two-dimensional representation of those topics, along with the 30 most important words for each topic. As we can see, the bulk of the language used within Seinfeld episodes overlaps considerably, with the episodes that are quite different from the norm being shown as smaller topics that are further away from the first 5.
+From the chart above, it appeared that 14 topics resulted in a good balance between number of topics and coherence score, as coherence score didn't increase much after that. As such, I then re-ran the gensim LDA model with 14 topics, and the gif below is a two-dimensional representation of those topics, along with the 30 most important words for each topic. As we can see, the bulk of the language used within Seinfeld episodes overlaps considerably, with the episodes that are quite different from the norm being shown as smaller topics that are further away from the first 5.
 
 ![](images/lda_gif.gif)
 
@@ -159,9 +152,7 @@ As such, I then re-ran the gensim LDA model with 14 topics, and the gif below is
 # Sentiment Analysis
 ![](images/problem.gif)
 
-In order to understand this corpus better, and to be able to learn yet another NLP tool, I decided to use NLTK's VADER library to do sentiment analysis on each line of dialogue within the corpus. The aim of sentiment analysis is to gauge the attitude, sentiments, evaluations, attitudes and emotions of a speaker/writer based on the computational treatment of subjectivity in a text.
-
-I also think that this sentiment analysis could potentially be useful when evaluating the results of my generative model, and I could even incorporate some sort of feedback loop to increase the positivity or negativity of a character's dialogue.
+In order to understand this corpus better, and to be able to learn yet another NLP tool, I decided to use NLTK's VADER library to do sentiment analysis on each line of dialogue within the corpus. The aim of sentiment analysis is to gauge the attitude, sentiments, evaluations, attitudes and emotions of a speaker/writer based on the computational treatment of subjectivity in a text. I also think that this sentiment analysis could potentially be useful when evaluating the results of my generative model, and I could even incorporate some sort of feedback loop to increase the positivity or negativity of a character's dialogue.
 
 VADER (Valence Aware Dictionary and sEntiment Reasoner) is a lexicon and rule-based sentiment analysis tool that is specifically attuned to sentiments expressed in social media. VADER uses a combination of A sentiment lexicon is a list of lexical features (e.g., words) which are generally labelled according to their semantic orientation as either positive or negative. Also, VADER doesn't require any training data, which means it can be used right out of the box.
 
@@ -189,6 +180,7 @@ The plot below shows how sentiment changes over the seasons. We can see that sea
 ![](images/pos_neg_sentiment_season.png)
 
 The chart below shows how each main character's sentiment changes over the seasons. As we can see, George gets very negative in season two, and then he an all the other characters have less negative lines as time goes on. We can also see that Kramer gets more and more positive as the seasons go on. 
+
 ![](images/pos_neg_sentiment_character.png)
 
 
@@ -202,7 +194,9 @@ The chart below shows how each main character's sentiment changes over the seaso
 |  14 | The Baby Shower   | 16-May-91 | Larry Charles               | Tom Cherones  |           0.24 |           0.23  |
 |   7 | The Jacket        | 6-Feb-91  | Larry David, Jerry Seinfeld | Tom Cherones  |           0.29 |           0.23 |
 
-Synopsis for the ex-girlfriend: George wants to break up with his girlfriend Marlene, whose tendency to drag out conversations and phone messages irritates him to no end. After an emotional split, he realizes he has left some books in her apartment. Jerry tries to convince George that he does not need the books, as he has already read them, but George nevertheless persuades Jerry to get them for him. To retrieve the books, Jerry decides to go on a date with Marlene, during which she tells him that she and Jerry can still be friends, despite her recent break-up. Jerry and Marlene start dating, but after a while, Jerry finds her just as annoying as George did. He wants to break up with her, but finds she has a "psycho-sexual" hold on him.
+**Synopsis for "The Ex-Girlfriend":**
+
+George wants to break up with his girlfriend Marlene, whose tendency to drag out conversations and phone messages irritates him to no end. After an emotional split, he realizes he has left some books in her apartment. Jerry tries to convince George that he does not need the books, as he has already read them, but George nevertheless persuades Jerry to get them for him. To retrieve the books, Jerry decides to go on a date with Marlene, during which she tells him that she and Jerry can still be friends, despite her recent break-up. Jerry and Marlene start dating, but after a while, Jerry finds her just as annoying as George did. He wants to break up with her, but finds she has a "psycho-sexual" hold on him.
 
 ## Episodes with Highest Percentage of Positive lines
 
@@ -214,7 +208,9 @@ Synopsis for the ex-girlfriend: George wants to break up with his girlfriend Mar
 | 54 | The Visa            | 27-Jan-93 | Peter Mehlman                | Tom Cherones       |           0.41 |          0.17  |
 | 93 | The Secretary       | 8-Dec-94  | Carol Leifer, Marjorie Gross | David Owen Trainor |           0.41 |          0.10 |
 
-Synopsis for The Trip: Jerry is offered two free tickets from New York City to Hollywood to appear on The Tonight Show with Jay Leno. He offers one to George and they decide that while they are in Los Angeles they will track down Kramer, who headed to Los Angeles in the previous episode, "The Keys", to become an actor. A dead woman turns up in another part of LA and Kramer's script he had given to her is found on her body. George thinks he has insightful conversations with the talk show guests (Corbin Bernsen and George Wendt) but they both call him "some nut" when they appear publicly. 
+**Synopsis for "The Trip":** 
+
+Jerry is offered two free tickets from New York City to Hollywood to appear on The Tonight Show with Jay Leno. He offers one to George and they decide that while they are in Los Angeles they will track down Kramer, who headed to Los Angeles in the previous episode, "The Keys", to become an actor. A dead woman turns up in another part of LA and Kramer's script he had given to her is found on her body. George thinks he has insightful conversations with the talk show guests (Corbin Bernsen and George Wendt) but they both call him "some nut" when they appear publicly. 
 
 [Back to Top](#Table-of-Contents)
 
@@ -283,7 +279,6 @@ george: i tell you; i'm wiped.
 jerry: so, has the summer of george already started or are you still de-composing? 
 
 george: de-compressing. 
-
 ```
 
 Predicting dialogue using first line from above, with a low temperature value (less randomness):
@@ -328,7 +323,7 @@ But then I found [this](https://www.youtube.com/watch?v=xr3Tjx-e71c), and my mod
 ## Reflection
 - Overall, this was a really fun corpus to work with, and I learned a lot about Seinfeld, in the process of learning much more about NLP.
 - I realized that topic modeling can often be very difficult to draw conclusions from , but will still give you insights related to your documents, even if you can't discern concrete "topics".
-- Sentiment analysis using VADER is really 
+- Sentiment analysis using VADER is really quick and easy to use right out of the box.
 - Even a character-based LSTM model is pretty amazing, in that it's able to produce somewhat coherent sentences and dialogue.
 
 ## Future Work
@@ -337,7 +332,7 @@ But then I found [this](https://www.youtube.com/watch?v=xr3Tjx-e71c), and my mod
   - Character-based: seq2seq
   - Word-based
   - Word-vector based
-  - Chatbot based approach
+  - Chatbot based approach (questions and answers)
 - A few limitations with these models will be training time, as with trying to predict a word using the N words before that word, the  prediction space is suddenly your entire vocabulary! 
 - This makes for a potentially HUGE (6,500+ depending on vocab) # of word prediction options, which will in turn require much more processing power.
 - However, I believe that these types of model "might" be more accurate overall, in that they can internally take the context of each word into account, within the LSTM neural network.
