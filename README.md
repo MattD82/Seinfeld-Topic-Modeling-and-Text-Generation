@@ -54,7 +54,7 @@ I also thought it would be a very interesting problem to try and see if I can tr
 [Back to Top](#Table-of-Contents)
 
 # Exploratory Data Analysis
-To begin exploring into this dataset, I decided to look at who speaks the most, over the entire series. As expected, Jerry has the most lines of all the main characters, followed by George, Kramer and Elaine. I thought it was interesting how large of a drop off there was between these four main characters, and the rest of the characters in the series. Also, while not shown in the graph below, there are ~1,600 unique characters in th entire series.
+To begin exploring  this dataset, I decided to look at who speaks the most, over the entire series. As expected, Jerry has the most lines of all the main characters, followed by George, Elaine, and Kramer. I thought it was interesting how large of a drop off there was between these four main characters, and the rest of the characters in the series. Also, while not shown in the graph below, there are ~1,600 unique characters in the entire series.
 
 ![](images/lines_by_char_series.png)
 
@@ -115,7 +115,7 @@ I began topic modeling of this corpus by combining the lines of dialogue into on
 - Calculate perplexity or coherence.
 - Adjust stop words accordingly and repeat all steps above until you have an LDA model that is somewhat informative.
 
-After doing all of the steps above, I ended up with 10 topics, and the word could below shows the 10 most important keywords for each of those topics. These 10 topics were chosen because with only around 5 or 6 topics, I really wasn't seeing any differentiation between the keywords in each topic, and with more than 10 topics, due to the fact that the corpus only contains 174 episodes, I was seeing some topics that almost encompass only one episode/document.
+After doing all of the steps above, I ended up with 10 topics, and the word cloud below shows the 10 most important keywords for each of those topics. These 10 topics were chosen because with only around 5 or 6 topics, I really wasn't seeing any differentiation between the keywords in each topic, and with more than 10 topics, due to the fact that the corpus only contains 174 episodes, I was seeing some topics that almost encompass only one episode/document.
 
 Also, while this analysis didn't really produce any concrete "topics" that are generalizable to multiple episodes, it did pull out some key words and characters that are very episode-specific. For example, "Keith Hernandez" shows up in topic two, as does "latex", and in the episode "The Boyfriend", Jerry meets his idol, Keith Hernandez (former New York Mets baseball player), and George tells the unemployment office that he's close to a job with Vandelay Industries, a company he made up that makes latex products.
 
@@ -129,7 +129,7 @@ In order to continue learning as much as possible about LDA, and the python libr
 For this model, I also went through many iterations of adding to the stop words list, and these are the additional stop words I used, in order to see more differentiation between the topics:
 
 ```
-['people', 'happen', 'bad', 'ask', 'anything', 'love' 'nice', 'show','doctor', 'eat', 'hear', 'watch','big' 'meet', 'dog', 'life', 'great', 'kind', 'start', 'funny', 'car', 'keep', 'head', 'find', 'feel' 'everything', 'pick', 'remember', 'boy', 'listen', 'hand', 'sit', 'move', 'sure', 'name', 'still', 'stop', 'wanna', 'new', 'day', 'phone', 'laugh', 'may', 'from', 'subject', 're', 'edu', 'use', 'be', 'get', 'go', 's', 'know', 'see', 'come', 'want', 'look', 'jerry', 'george', 'kramer', 'well', 'tell', 'say', 'think', 'make', 'would', 'could', 'right', 'take', 'good', 'really', 'elaine', 'ill', 'back', 'guy', 'talk', 'something', 'mean', 'thing', 'call', 'give', 'let', 'man', 'little', 'way', 'friend', 'put', 'like', 'time', 'never', 'thank', 'work', 'need', 'woman', 'leave', 'maybe', 'try', 'nothing', 'much'] 
+'people', 'happen', 'bad', 'ask', 'anything', 'love' 'nice', 'show','doctor', 'eat', 'hear', 'watch','big' 'meet', 'dog', 'life', 'great', 'kind', 'start', 'funny', 'car', 'keep', 'head', 'find', 'feel' 'everything', 'pick', 'remember', 'boy', 'listen', 'hand', 'sit', 'move', 'sure', 'name', 'still', 'stop', 'wanna', 'new', 'day', 'phone', 'laugh', 'may', 'from', 'subject', 're', 'edu', 'use', 'be', 'get', 'go', 's', 'know', 'see', 'come', 'want', 'look', 'jerry', 'george', 'kramer', 'well', 'tell', 'say', 'think', 'make', 'would', 'could', 'right', 'take', 'good', 'really', 'elaine', 'ill', 'back', 'guy', 'talk', 'something', 'mean', 'thing', 'call', 'give', 'let', 'man', 'little', 'way', 'friend', 'put', 'like', 'time', 'never', 'thank', 'work', 'need', 'woman', 'leave', 'maybe', 'try', 'nothing', 'much'
 ```
 As we can see below, this model didn't really perform any better in terms of grouping Seinfeld episodes into "topics", but once again we have quite a few episode specific words and characters, including "yada_yada", "festivus", "fusilli", and "sponge".
 
@@ -150,24 +150,25 @@ As such, I then re-ran the gensim LDA model with 14 topics, and the gif below is
 # Sentiment Analysis
 ![](images/problem.gif)
 
-In order to understand this corpus better, and to be able to learn yet another NLP tool, I decided to use NLTK's VADER library to do sentiment analysis on each line of dialogue within the corpus.
+In order to understand this corpus better, and to be able to learn yet another NLP tool, I decided to use NLTK's VADER library to do sentiment analysis on each line of dialogue within the corpus. The aim of sentiment analysis is to gauge the attitude, sentiments, evaluations, attitudes and emotions of a speaker/writer based on the computational treatment of subjectivity in a text.
 
-I also think that this sentiment analysis could be useful when evaluating the results of my generative model, and could even incorporate some sort of feedback loop to increase the positivity or negativity of a character's dialogue.
+I also think that this sentiment analysis could potentially be useful when evaluating the results of my generative model, and I could even incorporate some sort of feedback loop to increase the positivity or negativity of a character's dialogue.
 
-VADER is (FILL THIS IN).
+VADER (Valence Aware Dictionary and sEntiment Reasoner) is a lexicon and rule-based sentiment analysis tool that is specifically attuned to sentiments expressed in social media. VADER uses a combination of A sentiment lexicon is a list of lexical features (e.g., words) which are generally labelled according to their semantic orientation as either positive or negative. Also, VADER doesn't require any training data, which means it can be used right out of the box.
 
-Example of a line with positive sentiment:
+Example of a line of dialogue with positive sentiment:
+```
+Jerry: You know George they are doing wonderful things at mental institutions these days. I'd be happy to set-up a meet and greet.
+
+{'neg': 0.0, 'neu': 0.65, 'pos': 0.35, 'compound': 0.8658}
 ```
 
+Example of a line of dialogue with negative sentiment:
 ```
+Kramer: If I don't have a good shower I am not myself. I feel weak and ineffectual. I'm not Kramer.
 
-Example of a line with negative sentiment:
+{'neg': 0.242, 'neu': 0.631, 'pos': 0.127, 'compound': -0.296}
 ```
-
-
-```
-
-
 
 The sentiment for the entire series is as follows:
 - Positive lines: 31%
@@ -223,25 +224,77 @@ The chart below shows how each main character's sentiment changes over the seaso
 |  39 | The Keys           | 6-May-92  | Larry Charles                          | Tom Cherones  |           0.24 |           0.18 |
 
 
-## Tying this all together
+## Tying Previous Analysis Together
 In order to cohesively combine all of the above analysis, I thought it'd be fun to take a look at one of my favorite episodes, and see how it looks with respect to topic modeling and sentiment analysis. 
 
 Epside name: **"The Summer of George"**
+- Season: 8
+- Writers: Alec Berg, Jeff Schaffer
+- Synopsis: George discovers he has a severance package from the New York Yankees that should last him about 3 months, so he decides that he's going to take full advantage of 3 months off and become very active. However, instead of living a very active lifestyle as he'd planned, George becomes extremely lazy. He never changes out of his pajamas, and feels too weak to even come to Jerry's apartment, asking Jerry, Elaine and Kramer to instead visit him or talking to Jerry on the phone to know what's going on over at his apartment.
+- Dominant Topic using sklearn: 1 (general episodes)
+  - Keywords: 
+- Dominant Topic using Gensim/spaCy: 5 (general episodes)
+  - Keywords: "door, break, door, break, walk, guess, apartment, turn, place, run, hell, room"
+- Dominant Topic using optimal topic model: 1 (general episodes)
+  - Keywords: "run, hell, turn, problem, wait, point, hold, help, even, door"
+- Positive Lines: 27%
+- Negative Lines: 17%
+- George Positive lines: 27%
+- George Negative lines: 12%
 
-|     | Title              | AirDate   | Writers                                | Director      |   Percent_Positive |   Percent_Negative |
-|----:|:-------------------|:----------|:---------------------------------------|:--------------|-------------------:|-------------------:|
-|Sklearn Topic|5 |:----------|:---------------------------------------|:--------------|-------------------:|-------------------:|
+Similar episodes using cosine pairwise distance: 71, 31, 168, 103, 36
+
+| Title | Season | Writers | Synopsis | Dominant Topic (optimal) | Dominant Topic Keywords | Positive Lines | Negative Lines |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| The Barber    | 5 | Andy Robin | At a job interview, George's interviewer, Mr. Tuttle, is cut off mid-sentence by an important telephone call, and sends George away without saying whether he has been hired or not. Mr. Tuttle told George that one of the things that make George such an attractive hire is that he can "understand everything immediately", so George is afraid to call and ask for clarification. | as |  ff |fdf  | ff | 
+|  The Suicide | 3 | Tom Leopold  | After his neighbor Martin tries to commit suicide and ends up in a coma, Jerry is hit on by his girlfriend, Gina. Newman hints to Jerry that he will tell Martin what's been going on with Jerry and Gina. Jerry attempts to buy Newman off with the extra Drake's coffee cake that he has. | 5  | play, pen, darren, cake, bubble_boy, hell, wait, together, hair, dont_know | | |
+| The Burning | 9 | Jennifer Crittenden  |  |   | | | |
+| The Fusilli Jerry | 6 | Marjorie Gross |  |   | | | |
+| The Good Samaritan| 3 | Peter Mehlman |  |   | | | |
 
 
+Sample Dialogue from "The Summer of George":
+```
+george: all right, that's enough. i gotta go home and take a nap. 
+
+jerry: it's 10:30 in the morning? 
+
+george: i tell you; i'm wiped. 
+
+jerry: so, has the summer of george already started or are you still de-composing? 
+
+george: de-compressing. 
+
+```
 
 [Back to Top](#Table-of-Contents)
 
-
 # Text Generation
-While I haven't done much with text generation yet, I have been looking into several options for my model, and will most likely use a LSTM RNN. There are quite a few different methodologies that can be applied when creating these types of models, and the two main ways to generate text are character-based, and word-based. In a character-based model, the prediction happens one character at a time, with the neural network inputs being the N characters before the character being predicted. This allows for the number to potential predictions (y-values) to be quite small, in that it's only usually: `letters in the alphabet + digits 0-9 + punctuation`.
+While I haven't done much with text generation yet, I have been looking into several options for my model, and will most likely use a LSTM RNN as my final model. There are quite a few different methodologies that can be applied when creating these types of models, and the three main ways to generate text are character-based, word-based, and word-vector based. In a character-based model, the prediction happens one character at a time, with the neural network inputs being the N characters before the character being predicted. This allows for the number of potential predictions (y-values) to be quite small, in that it's only: `letters in the alphabet + digits 0-9 + punctuation`.
 
-Contrast this with trying to predict a word using the N words before that word, and your prediction space is suddenly your entire vocabulary! This makes for a potentially HUGE (30,000+ depending on vocab) # of word prediction options, which will in turn require much more processing power. However, I believe that this type of model "might" be more accurate overall, in that it can internally take the context of each word into account, within the LSTM neural network.
+Here is an example of how I am segmenting my text for the initial character-based LSTM model:
 
+
+
+This results in the following X (sequence) and y (target) matrices:
+
+
+I also noticed that the model was prediciting Jerry and other characters would say "I don't know" all the time. 
+```
+jerry: hi, how's your day going today, what is the deal?
+
+george: yeah. 
+
+george: i dont know. its not easy so up. 
+
+jerry: i dont have to eat. 
+
+george: i gotta go to the lost battle. 
+
+jerry: why does he do...
+```
+
+But then I found this, and my model totally makes sense now!
 
 [Back to Top](#Table-of-Contents)
 
@@ -250,7 +303,8 @@ Contrast this with trying to predict a word using the N words before that word, 
 - 
 
 ## Future Work
-- 
+- Contrast this with trying to predict a word using the N words before that word, and your prediction space is suddenly your entire vocabulary! This makes for a potentially HUGE (30,000+ depending on vocab) # of word prediction options, which will in turn require much more processing power. However, I believe that this type of model "might" be more accurate overall, in that it can internally take the context of each word into account, within the LSTM neural network.
+
 
 [Back to Top](#Table-of-Contents)
 
