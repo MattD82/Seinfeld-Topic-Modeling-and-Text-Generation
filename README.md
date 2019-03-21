@@ -4,14 +4,22 @@ Capstone Project for Galvanize Data Science Immersive
 
 by Matt Devor
 
-Important metrics
-Clarity of Project Description (0-3)    
-Data description and EDA (0-3)    
-Modeling Methodology and Validation (0-3)    
-Results and Future Work (0-3)   
-Wow! factor (0-3)
-
 ## Table of Contents
+- [Introduction](#introduction)
+- [Strategy and Process](#strategy-and-process)
+- [Overview of the Data](#overview-of-the-data)
+- [Exploratory Data Analysis](#exploratory-data-analysis)
+  * [EDA Takeaways](#eda-takeaways)
+- [Unsupervised Learning: LDA with Sklearn](#unsupervised-learning-lda-with-sklearn)
+- [Unsupervised Learning: LDA with Gensim/spaCy](#unsupervised-learning-lda-with-gensimspacy)
+- [Sentiment Analysis](#sentiment-analysis)
+  * [Episodes with the Highest Percentage of Negative Lines](#episodes-with-the-highest-percentage-of-negative-lines)
+  * [Episodes with Highest Percentage of Positive lines](#episodes-with-highest-percentage-of-positive-lines)
+  * [Tying Previous Analysis Together](#tying-previous-analysis-together)
+- [Text Generation](#text-generation)
+- [Reflection and Future Work](#reflection-and-future-work)
+  * [Reflection](#reflection)
+  * [Future Work](#future-work)
 
 
 
@@ -121,7 +129,7 @@ Also, while this analysis didn't really produce any concrete "topics" that are g
 
 ![](images/lda_sklearn_wordcloud.png)
 
-Perplexity for this model: 2,208
+[Back to Top](#Table-of-Contents)
 
 # Unsupervised Learning: LDA with Gensim/spaCy
 In order to continue learning as much as possible about LDA, and the python libraries available for NLP, I decided to use Gensim/Spacy to do topic modeling on the corpus of episodes as well. Gensim makes it very easy to create bigram and trigram models, and spaCy's lemmitization feature allows one to take only the parts of speech they are interested in. In this case, I decided to only use nouns, adjectives, verbs, and adverbs, in order to reduce the amount of words that would be less useful to differentiate topics. 
@@ -146,6 +154,7 @@ As such, I then re-ran the gensim LDA model with 14 topics, and the gif below is
 
 ![](images/lda_gif.gif)
 
+[Back to Top](#Table-of-Contents)
 
 # Sentiment Analysis
 ![](images/problem.gif)
@@ -193,15 +202,7 @@ The chart below shows how each main character's sentiment changes over the seaso
 |  14 | The Baby Shower   | 16-May-91 | Larry Charles               | Tom Cherones  |           0.24 |           0.23  |
 |   7 | The Jacket        | 6-Feb-91  | Larry David, Jerry Seinfeld | Tom Cherones  |           0.29 |           0.23 |
 
-## Episodes with Lowest Percentage of Negative lines
-
-|     | Title                                     | AirDate   | Writers                                    | Director           |   Percent Positive |   Percent Negative |
-|----:|:------------------------------------------|:----------|:-------------------------------------------|:-------------------|-------------------:|-------------------:|
-|  93 | The Secretary                             | 8-Dec-94  | Carol Leifer, Marjorie Gross               | David Owen Trainor |           0.41 |          0.10 |
-|  77 | The Marine Biologist                      | 10-Feb-94 | Ron Hague, Charlie Rubin                   | Tom Cherones       |           0.40 |          0.10 |
-| 164 | The Reverse Peephole (a.k.a. The Man Fur) | 15-Jan-98 | Spike Feresten                             | Andy Ackerman      |           0.33 |          0.10  |
-|  73 | The Cigar Store Indian                    | 9-Dec-93  | Tom Gammill, Max Pross                     | Tom Cherones       |           0.33 |          0.11  |
-|  84 | The Opposite                              | 19-May-94 | Andy Cowan and Larry David, Jerry Seinfeld | Tom Cherones       |           0.35 |          0.11  |
+Synopsis for the ex-girlfriend: George wants to break up with his girlfriend Marlene, whose tendency to drag out conversations and phone messages irritates him to no end. After an emotional split, he realizes he has left some books in her apartment. Jerry tries to convince George that he does not need the books, as he has already read them, but George nevertheless persuades Jerry to get them for him. To retrieve the books, Jerry decides to go on a date with Marlene, during which she tells him that she and Jerry can still be friends, despite her recent break-up. Jerry and Marlene start dating, but after a while, Jerry finds her just as annoying as George did. He wants to break up with her, but finds she has a "psycho-sexual" hold on him.
 
 ## Episodes with Highest Percentage of Positive lines
 
@@ -209,20 +210,13 @@ The chart below shows how each main character's sentiment changes over the seaso
 |---:|:--------------------|:----------|:-----------------------------|:-------------------|-------------------:|-------------------:|
 | 40 | The Trip (1)        | 12-Aug-92 | Larry Charles                | Tom Cherones       |           0.42 |          0.12  |
 |  0 | Good News, Bad News | 5-Jul-89  | Larry David, Jerry Seinfeld  | Art Wolff          |           0.42 |          0.15  |
-| 82 | The Fire            | 5-May-94  | Larry Charles                | Tom Cherones       |           0.41 |          0.15   |
+| 82 | The Fire            | 5-May-94  | Larry Charles                | Tom Cherones       |           0.41 |          0.15  |
 | 54 | The Visa            | 27-Jan-93 | Peter Mehlman                | Tom Cherones       |           0.41 |          0.17  |
 | 93 | The Secretary       | 8-Dec-94  | Carol Leifer, Marjorie Gross | David Owen Trainor |           0.41 |          0.10 |
 
-## Episodes with Lowest Percentage of Positive lines
+Synopsis for The Trip: Jerry is offered two free tickets from New York City to Hollywood to appear on The Tonight Show with Jay Leno. He offers one to George and they decide that while they are in Los Angeles they will track down Kramer, who headed to Los Angeles in the previous episode, "The Keys", to become an actor. A dead woman turns up in another part of LA and Kramer's script he had given to her is found on her body. George thinks he has insightful conversations with the talk show guests (Corbin Bernsen and George Wendt) but they both call him "some nut" when they appear publicly. 
 
-|     | Title              | AirDate   | Writers                                | Director      |   Percent_Positive |   Percent_Negative |
-|----:|:-------------------|:----------|:---------------------------------------|:--------------|-------------------:|-------------------:|
-|  22 | The Parking Garage | 30-Oct-91 | Larry David                            | Tom Cherones  |           0.21 |           0.18 |
-|  16 | The Busboy         | 26-Jun-91 | Larry David, Jerry Seinfeld            | Tom Cherones  |           0.21 |           0.18 |
-| 171 | The Maid           | 30-Apr-98 | Alec Berg, David Mandel, Jeff Schaffer | Andy Ackerman |           0.23 |           0.17  |
-|  88 | The Chinese Woman  | 13-Oct-94 | Peter Mehlman                          | Andy Ackerman |           0.23 |           0.18  |
-|  39 | The Keys           | 6-May-92  | Larry Charles                          | Tom Cherones  |           0.24 |           0.18 |
-
+[Back to Top](#Table-of-Contents)
 
 ## Tying Previous Analysis Together
 In order to cohesively combine all of the above analysis, I thought it'd be fun to take a look at one of my favorite episodes, and see how it looks with respect to topic modeling and sentiment analysis. 
@@ -232,7 +226,7 @@ Epside name: **"The Summer of George"**
 - Writers: Alec Berg, Jeff Schaffer
 - Synopsis: George discovers he has a severance package from the New York Yankees that should last him about 3 months, so he decides that he's going to take full advantage of 3 months off and become very active. However, instead of living a very active lifestyle as he'd planned, George becomes extremely lazy. He never changes out of his pajamas, and feels too weak to even come to Jerry's apartment, asking Jerry, Elaine and Kramer to instead visit him or talking to Jerry on the phone to know what's going on over at his apartment.
 - Dominant Topic using sklearn: 1 (general episodes)
-  - Keywords: 
+  - Keywords: "door, head, better, jerrys, long, hell, leave, thank, lot, guys"
 - Dominant Topic using Gensim/spaCy: 5 (general episodes)
   - Keywords: "door, break, door, break, walk, guess, apartment, turn, place, run, hell, room"
 - Dominant Topic using optimal topic model: 1 (general episodes)
@@ -242,16 +236,41 @@ Epside name: **"The Summer of George"**
 - George Positive lines: 27%
 - George Negative lines: 12%
 
-Similar episodes using cosine pairwise distance: 71, 31, 168, 103, 36
+Similar episodes using cosine pairwise distance: 
 
-| Title | Season | Writers | Synopsis | Dominant Topic (optimal) | Dominant Topic Keywords | Positive Lines | Negative Lines |
+| Title | Season | Writers | Synopsis | 
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| The Barber    | 5 | Andy Robin | At a job interview, George's interviewer, Mr. Tuttle, is cut off mid-sentence by an important telephone call, and sends George away without saying whether he has been hired or not. Mr. Tuttle told George that one of the things that make George such an attractive hire is that he can "understand everything immediately", so George is afraid to call and ask for clarification. | as |  ff |fdf  | ff | 
-|  The Suicide | 3 | Tom Leopold  | After his neighbor Martin tries to commit suicide and ends up in a coma, Jerry is hit on by his girlfriend, Gina. Newman hints to Jerry that he will tell Martin what's been going on with Jerry and Gina. Jerry attempts to buy Newman off with the extra Drake's coffee cake that he has. | 5  | play, pen, darren, cake, bubble_boy, hell, wait, together, hair, dont_know | | |
-| The Burning | 9 | Jennifer Crittenden  |  |   | | | |
-| The Fusilli Jerry | 6 | Marjorie Gross |  |   | | | |
-| The Good Samaritan| 3 | Peter Mehlman |  |   | | | |
+| The Barber    | 5 | Andy Robin | At a job interview, George's interviewer, Mr. Tuttle, is cut off mid-sentence by an important telephone call, and sends George away without saying whether he has been hired or not. Mr. Tuttle told George that one of the things that make George such an attractive hire is that he can "understand everything immediately", so George is afraid to call and ask for clarification. |
+|  The Suicide | 3 | Tom Leopold  | After his neighbor Martin tries to commit suicide and ends up in a coma, Jerry is hit on by his girlfriend, Gina. Elaine and George visit a psychic at her apartment, who warns George to cancel his vacation to the Cayman Islands. When Elaine rebukes her for smoking while pregnant, the psychic kicks them out before telling George why he should cancel.|
+| The Burning | 9 | Jennifer Crittenden  | At the coffee shop, George laments to Jerry about losing respect at a project meeting led by Mr. Kruger after following a good suggestion with a bad joke. Jerry suggests that George use the Vegas showmanship trick of leaving the room after a comedic high note. |
+| The Fusilli Jerry | 6 | Marjorie Gross | Kramer goes to the Department of Motor Vehicles for his new license plate. To his surprise, the plate reads "ASSMAN". He suspects that the plate was meant for a proctologist, and uses this theory to his advantage, by parking in a "Doctors Only" spot when he goes to pick up Estelle. The plate also scores him cat calls from passing drivers, and a date with a big-bottomed woman named Sally.|
+| The Good Samaritan| 3 | Peter Mehlman | Jerry witnesses a hit-and-run driver hitting another car. He is on the car phone with Elaine, who tells him he has to go after the driver. He does, but when the driver steps out he sees that she is a beautiful woman named Angela (played by Melinda McGraw) and decides to date her. Jerry lies to Elaine, saying he pursued the driver into Queens and intimidated him with karate moves. |
 
+
+[Back to Top](#Table-of-Contents)
+
+# Text Generation
+While I haven't done much with text generation yet, I have been looking into several options for my model, and will most likely use a LSTM RNN as my final model. There are quite a few different methodologies that can be applied when creating these types of models, and the three main ways to generate text are character-based, word-based, and word-vector based. In a character-based model, the prediction happens one character at a time, with the neural network inputs being the sequence of characters before the character being predicted. This allows for the number of potential predictions (y-values) to be quite small, in that it's only: `letters in the alphabet + digits 0-9 + punctuation`.
+
+For my first model, I am using the following parameters:
+- Window size: sequence of 60 characters, predict the 61st
+- Number of potential alphanumeric characters: 50 (letters in the alphabet + digits 0-9 + punctuation)
+- Number of alphanumeric characters used to create X and y values: 100,000
+- End up with an X matrix that is (99,940 x 60 x 50) and a y matrix that is (99,940 x 50)
+- Number of LSTM layers: 1
+- Number of neurons in that layer: 228
+
+I realized through trial and error that much of the difficulty in creating an LSTM model is in vectorizing the text into X and y values.
+Here is an example of how I am segmenting the text for the initial character-based LSTM model:
+![](images/seq_pred.png)
+
+This results in the following X (sequence) and y (target) matrices:
+![](images/3d_matrix.png)
+
+![](images/2d_matrix.png)
+
+
+I thought it would be interesting to see how this basic model would predict dialogue using a prompt from "The Summer of George". 
 
 Sample Dialogue from "The Summer of George":
 ```
@@ -267,58 +286,60 @@ george: de-compressing.
 
 ```
 
-[Back to Top](#Table-of-Contents)
-
-# Text Generation
-While I haven't done much with text generation yet, I have been looking into several options for my model, and will most likely use a LSTM RNN as my final model. There are quite a few different methodologies that can be applied when creating these types of models, and the three main ways to generate text are character-based, word-based, and word-vector based. In a character-based model, the prediction happens one character at a time, with the neural network inputs being the N characters before the character being predicted. This allows for the number of potential predictions (y-values) to be quite small, in that it's only: `letters in the alphabet + digits 0-9 + punctuation`.
-
-Here is an example of how I am segmenting my text for the initial character-based LSTM model:
-
-
-
-This results in the following X (sequence) and y (target) matrices:
-
-
-I also noticed that the model was prediciting Jerry and other characters would say "I don't know" all the time. 
+Predicting dialogue using first line from above, with a low temperature value (less randomness):
 ```
-jerry: hi, how's your day going today, what is the deal?
+Seed Text:
+george: all right, that's enough. i gotta go home and take a . 
 
-george: yeah. 
+Predicted Dialogue:
+george: all right, that's enough. i gotta go home and take a shower? 
 
-george: i dont know. its not easy so up. 
+jerry: i dont know. i dont know. i dont know. i think i do that. 
 
-jerry: i dont have to eat. 
+jerry: i dont know. i dont know. i have to get the shoe off on the stock with women around the signal! 
 
-george: i gotta go to the lost battle. 
+jerry: what do you know what i would point to that i dont know.
 
-jerry: why does he do...
 ```
 
-But then I found this, and my model totally makes sense now!
+Predicting dialogue using first line from above, with a high temperature value (more randomness):
+```
+Seed Text:
+george: all right, that's enough. i gotta go home and take a . 
+
+Predicted Dialogue:
+george: all right, that's enough. i gotta go home and take at this couch with a problem put the elevator in from got over there right now. 
+
+jerry: you can i tester. 
+
+jerry: what was the car? 
+
+george: hes a persot. i hate the dryer sellised in the bitco moving out with this problem to get the lobby tickets to the eggees to come to play should see is we have a lot of here. 
+
+jerry: so what i do? i love her
+```
+
+With low temperature values, I noticed that almost all the characters were saying **"I don't know"** constantly, so I thought my model might be  predicting things completely incorrectly.
+But then I found [this](https://www.youtube.com/watch?v=xr3Tjx-e71c), and my model totally makes sense now! ;)
 
 [Back to Top](#Table-of-Contents)
 
 # Reflection and Future Work
 ## Reflection
-- 
+- Overall, this was a really fun corpus to work with, and I learned a lot about Seinfeld, in the process of learning much more about NLP.
+- I realized that topic modeling can often be very difficult to draw conclusions from , but will still give you insights related to your documents, even if you can't discern concrete "topics".
+- Sentiment analysis using VADER is really 
+- Even a character-based LSTM model is pretty amazing, in that it's able to produce somewhat coherent sentences and dialogue.
 
 ## Future Work
-- Contrast this with trying to predict a word using the N words before that word, and your prediction space is suddenly your entire vocabulary! This makes for a potentially HUGE (30,000+ depending on vocab) # of word prediction options, which will in turn require much more processing power. However, I believe that this type of model "might" be more accurate overall, in that it can internally take the context of each word into account, within the LSTM neural network.
-
+- I would like to continue with text generation/prediction, creating more of a back-and-forth dialogue model using several potential approaches:
+  - Character-based 
+  - Character-based: seq2seq
+  - Word-based
+  - Word-vector based
+  - Chatbot based approach
+- A few limitations with these models will be training time, as with trying to predict a word using the N words before that word, the  prediction space is suddenly your entire vocabulary! 
+- This makes for a potentially HUGE (6,500+ depending on vocab) # of word prediction options, which will in turn require much more processing power.
+- However, I believe that these types of model "might" be more accurate overall, in that they can internally take the context of each word into account, within the LSTM neural network.
 
 [Back to Top](#Table-of-Contents)
-
-
-```
-jerry: hi, how's your day going today, what is the deal?
-
-george: yeah. 
-
-george: i dont know. its not easy so up. 
-
-jerry: i dont have to eat. 
-
-george: i gotta go to the lost battle. 
-
-jerry: why does he do t
-```
