@@ -16,16 +16,16 @@ Wow! factor (0-3)
 
 
 # Introduction
-Seinfeld is an American television sitcom that ran for nine seasons on NBC, from 1989 to 1998. It was created by Larry David and Jerry Seinfeld, with the latter starring as a fictionalized version of himself. Set predominantly in an apartment building in Manhattan's Upper West Side in New York City, the show features a handful of Jerry's friends and acquaintances, including best friend George Costanza, friend and former girlfriend Elaine Benes, and neighbor across the hall Cosmo Kramer. It is often described as being "a show about nothing", as many of its episodes are about the minutiae of daily life.
+Seinfeld is an American television sitcom that ran for nine seasons on NBC, from 1989 to 1998. It was created by Larry David and Jerry Seinfeld, with the latter starring as a fictionalized version of himself. Set predominantly in an apartment building in Manhattan's Upper West Side in New York City, the show features a handful of Jerry's friends and acquaintances, including best friend George Costanza, friend and former girlfriend Elaine Benes, and neighbor across the hall Cosmo Kramer. It is often described as being "a show about nothing", as many of its episodes are about the minutiae of daily life. [source: wiki](https://en.wikipedia.org/wiki/Seinfeld)
 
 ![](images/nothing.jpg)
 
 
-I have been a huge fan of this show for around two decades, and still find myself going back and enjoying old episodes. I think the writing is absolutely brilliant, still holds up (even if some references are dated), and really appreciate the way that Larry David in particular can transform seemingly mundane daily occurrences into entertaining dialogue. 
+I have been a huge fan of this show for around two decades, and still find myself going back and enjoying old episodes. I think the writing is absolutely brilliant, still holds up (even if some of the references are dated), and really appreciate the way that Larry David in particular can transform seemingly mundane daily occurrences into entertaining dialogue. 
 
-I discovered a database containing scripts for every Seinfeld episode (located [here](https://www.kaggle.com/thec03u5/seinfeld-chronicles)), with dialogue separated by character. Since we have I have not had much previous experience with NLP, and because NLP has so many practical applications, I thought this would be a fun corpus to take on, and try to extract meaning from. 
+I discovered a database containing scripts for every Seinfeld episode (located [here](https://www.kaggle.com/thec03u5/seinfeld-chronicles)), with dialogue separated by character. Since I hadn't had previously an opportunity to do a deep-dive with NLP, and because NLP has so many practical applications, I thought this would be a fun corpus to take on and try to extract meaning from. 
 
-Initially, I deiced to use LDA and sentiment analysis to better inform my EDA and understanding of the corpus. Unsupervised learning in the form of LDA can quickly turn into an almost endless feedback loop (which I soon realized), but I was able to at least extract some interesting themes, dialogue snippets, and catch phrases from than analysis.
+Initially, I deiced to use LDA and sentiment analysis to better inform my EDA and understanding of the corpus. Unsupervised learning in the form of LDA can quickly turn into an almost endless feedback loop (which I soon realized), but I was able to at least extract some interesting themes, dialogue snippets, and catch phrases from that analysis.
 
 I also thought it would be a very interesting problem to try and see if I can train a model to emulate the speech patterns of the four main characters mentioned above, and even create a model that would “predict”/generate the script for a new episode of Seinfeld.
 
@@ -37,7 +37,7 @@ I also thought it would be a very interesting problem to try and see if I can tr
 - Exploratory Data Analysis
 - Unsupervised Learning: LDA - Sklearn
 - Unsupervised Learning: LDA - Gensim/Spacy
-- Sentiment Analysis
+- Sentiment Analysis with VADER
 - Text Generation
 - Reflection and Future Work
 
@@ -54,7 +54,7 @@ I also thought it would be a very interesting problem to try and see if I can tr
 [Back to Top](#Table-of-Contents)
 
 # Exploratory Data Analysis
-To begin looking into this dataset, I decided to look at who speaks the most, over the entire series. As expected, Jerry has the most lines of all the main characters, followed by George, Kramer and Elaine. I thought it was interesting how large of a drop off there way between these four main characters, and the rest of the characters in the series. Also, while not shown in the graph below, there are ~(FILL THIS IN) unique characters in all seasons combined (way too many to show on this plot).
+To begin exploring into this dataset, I decided to look at who speaks the most, over the entire series. As expected, Jerry has the most lines of all the main characters, followed by George, Kramer and Elaine. I thought it was interesting how large of a drop off there was between these four main characters, and the rest of the characters in the series. Also, while not shown in the graph below, there are ~1,600 unique characters in th entire series.
 
 ![](images/lines_by_char_series.png)
 
@@ -62,17 +62,17 @@ I also thought it would be interesting to see how the dialogue was divided among
 
 ![](images/lines_by_char_season.png)
 
-Another interesting metric that I looked at was who the writers were for each episode. In the plot below I aggregated, % of episodes written across seasons, and we can see the huge role that Larry David and Jerry had in writing the first two seasons. As that writing role diminishes, we can see other writers coming into the fold, but no one writer dominates much after season 5 or so. Larry Charles is another name that gets associated with Seinfeld quite often, and here you can see is increased role in writing seasons two and four.
+Another interesting metric that I looked at was who the writers were for each episode. In the plot below, I aggregated % of episodes written across seasons, and we can see the huge role that Larry David and Jerry had in writing the first two seasons. As that writing role diminishes, we can see other writers coming into the fold, but no one writer or writing team dominates much after season 5 or so. Larry Charles is another name that gets associated with Seinfeld quite often, and here you can see his increased role in writing seasons two and four.
 
 ![](images/writers_by_season.png)
 
-The chart below is meant to illustrate the **massive** amount of different writers and writing teams that contributed to Seinfeld. While we can see that Larry David and Jerry wrote the bulk of the episodes, this definitely shows how much of a collaborative writing effort the series as a whole really was. I also found it fascinating that most of the writing teams only wrote 1 episode, so the fact that the show has such coherence between episodes/characters is interesting. 
+The chart below is meant to illustrate the **massive** amount of different writers and writing teams that contributed to Seinfeld. While we can see that Larry David and Jerry wrote the bulk of the episodes, this definitely shows how much of a collaborative writing effort the series as a whole really was. I also found it fascinating that most of the writing teams only wrote 1 episode, so the fact that the show has such coherence between episodes/characters is impressive. 
 
 ![](images/writers_series.png)
 
-The final metrics I decided to look at for my EDA were average number of lines per episode and average number of characters (letters/numbers, not characters in the show) per episode. In the plot below, we can see that average lines per episode stays constant in seasons 1 and 2, and then increases by season ~50 lines per episode in season 3. In general, this metric keeps rising as the seasons go on, and while the episode lengths in terms of minutes stayed the same, this indicates more back-and-forth dialogue between characters. Said differently, this metric shows how many times the person speaking changes, on average, per episode. 
+The final metrics I decided to look at for my EDA were average number of lines per episode and average number of characters (letters/numbers/punctuation, not characters in the show) per episode. In the plot below, we can see that average lines per episode stays constant in seasons 1 and 2, and then increases by ~50 lines per episode in season 3. In general, this metric keeps rising as the seasons go on, and while the episode lengths in terms of total minutes stayed the same, this indicates more back-and-forth dialogue between characters. Said differently, this metric shows how many times the person speaking changes, on average, per episode. 
 
-The other metric this graph shows is average characters, or total script length per episode. It's interesting to see the decreasing trend of total script length in the first three seasons, as it seems like in those early seasons each character would speak longer per line of dialogue. After season 3, it seems like the show found a nice balance of lines per episode and script length, as those two appear to be linearly correlated for the rest of the seasons.
+The other metric this graph shows is average number of alphanumeric characters, or total script length, per episode. It's interesting to see the decreasing trend of total script length in the first three seasons, as it seems like in those early seasons each character would speak longer per line of dialogue. After season 3, it seems like the show found a nice balance of lines per episode and script length, as those two appear to be linearly correlated for the rest of the seasons.
 
 ![](images/avg_dialogue_chars.png)
 
@@ -81,14 +81,22 @@ The other metric this graph shows is average characters, or total script length 
 - George's role also decreased a bit after season 4, which corresponds to Larry David writing fewer episodes, and this makes sense because the character of George is based on Larry David himself.
 - Larry David and Jerry Seinfeld wrote almost the entire first season themselves, and the bulk of the second season as well.
 - After season 4, the writing was done by a much larger pool of people, and no one writer really dominated.
-- There are are over (FILL IN) unique writing teams who wrote Seinfeld episodes, but the bulk of them only wrote one episode.
+- There are are over 50 unique writing teams who wrote Seinfeld episodes, but the bulk of them only wrote one episode.
 - Lines of dialogue per episode increased as the seasons went on, indicating more back-and-forth dialogue between characters. 
 
 
 [Back to Top](#Table-of-Contents)
 
 # Unsupervised Learning: LDA with Sklearn
-Latent Dirichlet Allocation is an unsupervised modeling technique, used to derive latent topics from corpuses of text (collections of documents). There are many examples of real-world use cases for this technique, such as search engines, text to speech, classifying social media users, and many more.
+Latent Dirichlet Allocation is an unsupervised modeling technique, used to derive (k=num_topics) latent topics from corpuses of text (collections of documents). There are many examples of real-world use cases for this technique, such as search engines, text to speech, classifying social media users, and many more.
+
+LDA takes an input matrix and breaks it 
+
+| Matrix | Dimensions| Relates | Contains |
+|---|---|---|---|
+|X (input) | n x m | documents (n rows) to features/words (m columns) | Term frequency matrix of tokenized words and the number of times each word appears in each document. |
+|φ (phi) | k x m | topics (k rows) to features/words (m columns) | Composition of topics, in terms of which words comprise each topic. All rows sum to 1. |
+|θ (theta) | n x k | documents (n rows) to topics (k columns) | Topic distribution within each document. Each document can contain multiple topics. All rows sum to 1. |
 
 As with any unsupervised modeling technique, as there is nothing we are really "predicting" with this approach, it is quite difficult to accurately evaluate an LDA model quantitatively. Much of the value gained from topic modeling, and LDA specifically, is the ability to come up with a human-comprehensible understanding of the topics the model spits out.
 
@@ -113,6 +121,7 @@ Also, while this analysis didn't really produce any concrete "topics" that are g
 
 ![](images/lda_sklearn_wordcloud.png)
 
+Perplexity for this model: 2,208
 
 # Unsupervised Learning: LDA with Gensim/spaCy
 In order to continue learning as much as possible about LDA, and the python libraries available for NLP, I decided to use Gensim/Spacy to do topic modeling on the corpus of episodes as well. Gensim makes it very easy to create bigram and trigram models, and spaCy's lemmitization feature allows one to take only the parts of speech they are interested in. In this case, I decided to only use nouns, adjectives, verbs, and adverbs, in order to reduce the amount of words that would be less useful to differentiate topics. 
