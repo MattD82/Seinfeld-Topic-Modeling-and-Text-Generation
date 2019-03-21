@@ -52,7 +52,7 @@ Initially, I deiced to use LDA and sentiment analysis to better inform my EDA an
   - The first is 174 rows: a row for each episode of Seinfeld created, and includes features such as season, episode #, Title, AirDate, Writer(s), and Director.  
   - The second is ~54,600 rows: a row for each line of dialogue spoken by each character within each episode, and includes features such as Character (who is speaking), Dialogue (what they say), EpisodeNo, SeasonEpisodeID, and Season. 
 - There are 9 seasons of Seinfeld, with the pilot airing on June 7th, 1989, and the final episode airing May 14th, 1998.
-- There are only 10 NaNs in the dataset, and there is no dialogue info for those rows, so I decided it was ok to drop them.
+- There are only 10 NaNs in the dialogue dataset, and as there is no dialogue info for those rows, I decided it was ok to drop them.
 - There are an average of ~17,000 alphanumeric characters in each Seinfeld episode script, and a total of 2,920,645 characters in the entire series.
 - Depending on how the text is cleaned tokenized, and stemmed/lemmatized, there are approximately 8,500 unique words in the corpus.
 
@@ -60,7 +60,7 @@ Initially, I deiced to use LDA and sentiment analysis to better inform my EDA an
 [Back to Top](#Table-of-Contents)
 
 # Exploratory Data Analysis
-To begin exploring  this dataset, I decided to look at who speaks the most, over the entire series. As expected, Jerry has the most lines of all the main characters, followed by George, Elaine, and Kramer. I thought it was interesting how large of a drop off there was between these four main characters, and the rest of the characters in the series. Also, while not shown in the graph below, there are ~1,600 unique characters in the entire series.
+To begin exploring  this dataset, I decided to look at who speaks the most over the entire series. As expected, Jerry has the most lines of all the main characters, followed by George, Elaine, and Kramer. I thought it was interesting how large of a drop off there was between these four main characters, and the rest of the characters in the series. Also, while not shown in the graph below, there are ~1,600 unique characters in the entire series.
 
 ![](images/lines_by_char_series.png)
 
