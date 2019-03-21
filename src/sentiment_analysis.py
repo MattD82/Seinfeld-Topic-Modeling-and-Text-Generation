@@ -192,7 +192,7 @@ def plot_character_sentiment(df_sentiment_by_character):
                            lw=2.5,
                            linestyle="--")
 
-    plt.ylabel('Percent Lines with Either Positive of Negative Sentiment')
+    plt.ylabel('Percent Lines with Either Positive or Negative Sentiment')
     plt.xlabel('Season')
     plt.legend(loc='upper left')
     plt.title('Main Character Positive and Negative Sentiment - by Season - (dashed lines represet negative sentiment)'

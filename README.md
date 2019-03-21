@@ -16,7 +16,7 @@ Wow! factor (0-3)
 
 
 # Introduction
-Seinfeld is an American television sitcom that ran for nine seasons on NBC, from 1989 to 1998. It was created by Larry David and Jerry Seinfeld, with the latter starring as a fictionalized version of himself. Set predominantly in an apartment building in Manhattan's Upper West Side in New York City, the show features a handful of Jerry's friends and acquaintances, including best friend George Costanza, friend and former girlfriend Elaine Benes, and neighbor across the hall Cosmo Kramer (Michael Richards). It is often described as being "a show about nothing", as many of its episodes are about the minutiae of daily life.
+Seinfeld is an American television sitcom that ran for nine seasons on NBC, from 1989 to 1998. It was created by Larry David and Jerry Seinfeld, with the latter starring as a fictionalized version of himself. Set predominantly in an apartment building in Manhattan's Upper West Side in New York City, the show features a handful of Jerry's friends and acquaintances, including best friend George Costanza, friend and former girlfriend Elaine Benes, and neighbor across the hall Cosmo Kramer. It is often described as being "a show about nothing", as many of its episodes are about the minutiae of daily life.
 
 ![](images/nothing.jpg)
 
@@ -28,8 +28,6 @@ I discovered a database containing scripts for every Seinfeld episode (located [
 Initially, I deiced to use LDA and sentiment analysis to better inform my EDA and understanding of the corpus. Unsupervised learning in the form of LDA can quickly turn into an almost endless feedback loop (which I soon realized), but I was able to at least extract some interesting themes, dialogue snippets, and catch phrases from than analysis.
 
 I also thought it would be a very interesting problem to try and see if I can train a model to emulate the speech patterns of the four main characters mentioned above, and even create a model that would “predict”/generate the script for a new episode of Seinfeld.
-
-
 
 
 [Back to Top](#Table-of-Contents)
@@ -90,12 +88,11 @@ The other metric this graph shows is average characters, or total script length 
 [Back to Top](#Table-of-Contents)
 
 # Unsupervised Learning: LDA with Sklearn
-Latent Dirichlet Allocation is an unsupervised modeling technique, used to derive latent topics from corpuses of text (collections of documents). There are many examples of real-world use cases for this technique, such as:
--
+Latent Dirichlet Allocation is an unsupervised modeling technique, used to derive latent topics from corpuses of text (collections of documents). There are many examples of real-world use cases for this technique, such as search engines, text to speech, classifying social media users, and many more.
 
 As with any unsupervised modeling technique, as there is nothing we are really "predicting" with this approach, it is quite difficult to accurately evaluate an LDA model quantitatively. Much of the value gained from topic modeling, and LDA specifically, is the ability to come up with a human-comprehensible understanding of the topics the model spits out.
 
-While, optimally, this topic labelling can be done by looking at the most important keywords for each topic, it can still be quite difficult to separate topics into concrete "buckets".
+While optimally this topic labelling can be done by looking at the most important keywords for each topic, it can still be quite difficult to separate topics into concrete "buckets".
 
 I began topic modeling of this corpus by combining the lines of dialogue into one large block of text for each episode, therefore creating a "script" for each episode and each season. I then took the following steps to clean the data and feed it through sklearn's LDA model:
 - Corpus = dialogue for each episode
@@ -108,76 +105,124 @@ I began topic modeling of this corpus by combining the lines of dialogue into on
 - Look **manually** at most important key words for each topic and determine of those **make sense**. 
 - If words are repeated often between topics, we're not seeing much differentiation.
 - Calculate perplexity or coherence.
-- Adjust stop words accordingly and repeat all steps above into you have an LDA model that is somewhat informative.
+- Adjust stop words accordingly and repeat all steps above until you have an LDA model that is somewhat informative.
 
-After doing all of the steps above, I ended up with 10 topics, and the word could below shows the 10 most important keywords for each of those topics.
+After doing all of the steps above, I ended up with 10 topics, and the word could below shows the 10 most important keywords for each of those topics. These 10 topics were chosen because with only around 5 or 6 topics, I really wasn't seeing any differentiation between the keywords in each topic, and with more than 10 topics, due to the fact that the corpus only contains 174 episodes, I was seeing some topics that almost encompass only one episode/document.
+
+Also, while this analysis didn't really produce any concrete "topics" that are generalizable to multiple episodes, it did pull out some key words and characters that are very episode-specific. For example, "Keith Hernandez" shows up in topic two, as does "latex", and in the episode "The Boyfriend", Jerry meets his idol, Keith Hernandez (former New York Mets baseball player), and George tells the unemployment office that he's close to a job with Vandelay Industries, a company he made up that makes latex products.
 
 ![](images/lda_sklearn_wordcloud.png)
 
-Additional parameters that would be interesting to grid-search or try to find optimal values for:
 
-**CountVectorizer**
-- max_features in tf matrix
-- max_df, min_df
+# Unsupervised Learning: LDA with Gensim/spaCy
+In order to continue learning as much as possible about LDA, and the python libraries available for NLP, I decided to use Gensim/Spacy to do topic modeling on the corpus of episodes as well. Gensim makes it very easy to create bigram and trigram models, and spaCy's lemmitization feature allows one to take only the parts of speech they are interested in. In this case, I decided to only use nouns, adjectives, verbs, and adverbs, in order to reduce the amount of words that would be less useful to differentiate topics. 
 
+For this model, I also went through many iterations of adding to the stop words list, and these are the additional stop words I used, in order to see more differentiation between the topics:
 
-# Unsupervised Learning: LDA with Gensim/Spacy
+```
+['people', 'happen', 'bad', 'ask', 'anything', 'love' 'nice', 'show','doctor', 'eat', 'hear', 'watch','big' 'meet', 'dog', 'life', 'great', 'kind', 'start', 'funny', 'car', 'keep', 'head', 'find', 'feel' 'everything', 'pick', 'remember', 'boy', 'listen', 'hand', 'sit', 'move', 'sure', 'name', 'still', 'stop', 'wanna', 'new', 'day', 'phone', 'laugh', 'may', 'from', 'subject', 're', 'edu', 'use', 'be', 'get', 'go', 's', 'know', 'see', 'come', 'want', 'look', 'jerry', 'george', 'kramer', 'well', 'tell', 'say', 'think', 'make', 'would', 'could', 'right', 'take', 'good', 'really', 'elaine', 'ill', 'back', 'guy', 'talk', 'something', 'mean', 'thing', 'call', 'give', 'let', 'man', 'little', 'way', 'friend', 'put', 'like', 'time', 'never', 'thank', 'work', 'need', 'woman', 'leave', 'maybe', 'try', 'nothing', 'much'] 
+```
+As we can see below, this model didn't really perform any better in terms of grouping Seinfeld episodes into "topics", but once again we have quite a few episode specific words and characters, including "yada_yada", "festivus", "fusilli", and "sponge".
+
 ![](images/lda_gensim_wordcloud.png)
+
+In order to have a more quantitative approach to evaluating an LDA model, I decided to focus on Gensim's "Coherence" score, which is basically measure of how well a topic model splits documents into easily definable topics. The plot below shows hoe the coherence score changes as the number of topics increases.
+
+![](images/coherence.png)
+
+
+From the chart above, it appeared that 14 topics resulted in a good balance between number of topics and coherence score, as coherence score didn't increase much after that.
+
+As such, I then re-ran the gensim LDA model with 14 topics, and the gif below is a two-dimensional representation of those topics, along with the 30 most important words for each topic. As we can see, the bulk of the language used within Seinfeld episodes overlaps considerably, with the episodes that are quite different from the norm being shown as smaller topics that are further away from the first 5.
 
 ![](images/lda_gif.gif)
 
 
 # Sentiment Analysis
-
 ![](images/problem.gif)
 
-Positive lines for entire series: 31%
-Negative lines for entire series: 16%
-Neutral lines for entire series: 53%
+In order to understand this corpus better, and to be able to learn yet another NLP tool, I decided to use NLTK's VADER library to do sentiment analysis on each line of dialogue within the corpus.
 
-##  Most Negative Episodes of Seinfeld
+I also think that this sentiment analysis could be useful when evaluating the results of my generative model, and could even incorporate some sort of feedback loop to increase the positivity or negativity of a character's dialogue.
 
-|   Season - ADD  | Title             | AirDate   | Writers                     | Director      |   Percent_Positive |   Percent_Negative |
-|----:|:------------------|:----------|:----------------------------|:--------------|-------------------:|-------------------:|
-|   5 | The Ex-Girlfriend | 16-Jan-91 | Larry David, Jerry Seinfeld | Tom Cherones  |           0.318367 |           0.24898  |
-|   6 | The Pony Remark   | 30-Jan-91 | Larry David, Jerry Seinfeld | Tom Cherones  |           0.28     |           0.24     |
-| 134 | The Little Kicks  | 10-Oct-96 | Spike Feresten              | Andy Ackerman |           0.287037 |           0.234568 |
-|  14 | The Baby Shower   | 16-May-91 | Larry Charles               | Tom Cherones  |           0.244635 |           0.23176  |
-|   7 | The Jacket        | 6-Feb-91  | Larry David, Jerry Seinfeld | Tom Cherones  |           0.287356 |           0.229885 |
+VADER is (FILL THIS IN).
 
-## Least Negative Episodes of Seinfeld
+Example of a line with positive sentiment:
+```
 
-|     | Title                                     | AirDate   | Writers                                    | Director           |   Percent_Positive |   Percent_Negative |
-|----:|:------------------------------------------|:----------|:-------------------------------------------|:-------------------|-------------------:|-------------------:|
-|  93 | The Secretary                             | 8-Dec-94  | Carol Leifer, Marjorie Gross               | David Owen Trainor |           0.406154 |          0.0984615 |
-|  77 | The Marine Biologist                      | 10-Feb-94 | Ron Hague, Charlie Rubin                   | Tom Cherones       |           0.396011 |          0.0997151 |
-| 164 | The Reverse Peephole (a.k.a. The Man Fur) | 15-Jan-98 | Spike Feresten                             | Andy Ackerman      |           0.328313 |          0.10241   |
-|  73 | The Cigar Store Indian                    | 9-Dec-93  | Tom Gammill, Max Pross                     | Tom Cherones       |           0.330383 |          0.106195  |
-|  84 | The Opposite                              | 19-May-94 | Andy Cowan and Larry David, Jerry Seinfeld | Tom Cherones       |           0.351171 |          0.107023  |
+```
 
-## Most Positive Episodes of Seinfeld
+Example of a line with negative sentiment:
+```
 
-|    | Title               | AirDate   | Writers                      | Director           |   Percent_Positive |   Percent_Negative |
-|---:|:--------------------|:----------|:-----------------------------|:-------------------|-------------------:|-------------------:|
-| 40 | The Trip (1)        | 12-Aug-92 | Larry Charles                | Tom Cherones       |           0.422145 |          0.124567  |
-|  0 | Good News, Bad News | 5-Jul-89  | Larry David, Jerry Seinfeld  | Art Wolff          |           0.417062 |          0.146919  |
-| 82 | The Fire            | 5-May-94  | Larry Charles                | Tom Cherones       |           0.414966 |          0.14966   |
-| 54 | The Visa            | 27-Jan-93 | Peter Mehlman                | Tom Cherones       |           0.408027 |          0.167224  |
-| 93 | The Secretary       | 8-Dec-94  | Carol Leifer, Marjorie Gross | David Owen Trainor |           0.406154 |          0.0984615 |
 
-## Least Positive Episodes of Seinfeld
+```
 
-|     | Title              | AirDate   | Writers                                | Director      |   Percent_Positive |   Percent_Negative |
-|----:|:-------------------|:----------|:---------------------------------------|:--------------|-------------------:|-------------------:|
-|  22 | The Parking Garage | 30-Oct-91 | Larry David                            | Tom Cherones  |           0.209964 |           0.181495 |
-|  16 | The Busboy         | 26-Jun-91 | Larry David, Jerry Seinfeld            | Tom Cherones  |           0.210762 |           0.183857 |
-| 171 | The Maid           | 30-Apr-98 | Alec Berg, David Mandel, Jeff Schaffer | Andy Ackerman |           0.225275 |           0.17033  |
-|  88 | The Chinese Woman  | 13-Oct-94 | Peter Mehlman                          | Andy Ackerman |           0.226415 |           0.18239  |
-|  39 | The Keys           | 6-May-92  | Larry Charles                          | Tom Cherones  |           0.240678 |           0.183051 |
+
+
+The sentiment for the entire series is as follows:
+- Positive lines: 31%
+- Negative lines: 16%
+- Neutral lines: 53%
+
+The plot below shows how sentiment changes over the seasons. We can see that season two by far has largest % of negative lines, and season 6 is the most positive. I thought it was interesting that the number of negative lines seemed to trend with the number of episodes Larry David wrote.
 
 ![](images/pos_neg_sentiment_season.png)
 
+The chart below shows how each main character's sentiment changes over the seasons. As we can see, George gets very negative in season two, and then he an all the other characters have less negative lines as time goes on. We can also see that Kramer gets more and more positive as the seasons go on. 
 ![](images/pos_neg_sentiment_character.png)
+
+
+##  Episodes with the Highest Percentage of Negative Lines
+
+|   Season - ADD  | Title             | AirDate   | Writers                     | Director      |   Percent Positive |   Percent Negative |
+|----:|:------------------|:----------|:----------------------------|:--------------|-------------------:|-------------------:|
+|   5 | The Ex-Girlfriend | 16-Jan-91 | Larry David, Jerry Seinfeld | Tom Cherones  |           0.32 |           0.25  |
+|   6 | The Pony Remark   | 30-Jan-91 | Larry David, Jerry Seinfeld | Tom Cherones  |           0.28     |           0.24     |
+| 134 | The Little Kicks  | 10-Oct-96 | Spike Feresten              | Andy Ackerman |           0.29 |           0.23 |
+|  14 | The Baby Shower   | 16-May-91 | Larry Charles               | Tom Cherones  |           0.24 |           0.23  |
+|   7 | The Jacket        | 6-Feb-91  | Larry David, Jerry Seinfeld | Tom Cherones  |           0.29 |           0.23 |
+
+## Episodes with Lowest Percentage of Negative lines
+
+|     | Title                                     | AirDate   | Writers                                    | Director           |   Percent Positive |   Percent Negative |
+|----:|:------------------------------------------|:----------|:-------------------------------------------|:-------------------|-------------------:|-------------------:|
+|  93 | The Secretary                             | 8-Dec-94  | Carol Leifer, Marjorie Gross               | David Owen Trainor |           0.41 |          0.10 |
+|  77 | The Marine Biologist                      | 10-Feb-94 | Ron Hague, Charlie Rubin                   | Tom Cherones       |           0.40 |          0.10 |
+| 164 | The Reverse Peephole (a.k.a. The Man Fur) | 15-Jan-98 | Spike Feresten                             | Andy Ackerman      |           0.33 |          0.10  |
+|  73 | The Cigar Store Indian                    | 9-Dec-93  | Tom Gammill, Max Pross                     | Tom Cherones       |           0.33 |          0.11  |
+|  84 | The Opposite                              | 19-May-94 | Andy Cowan and Larry David, Jerry Seinfeld | Tom Cherones       |           0.35 |          0.11  |
+
+## Episodes with Highest Percentage of Positive lines
+
+|    | Title               | AirDate   | Writers                      | Director           |   Percent Positive |   Percent Negative |
+|---:|:--------------------|:----------|:-----------------------------|:-------------------|-------------------:|-------------------:|
+| 40 | The Trip (1)        | 12-Aug-92 | Larry Charles                | Tom Cherones       |           0.42 |          0.12  |
+|  0 | Good News, Bad News | 5-Jul-89  | Larry David, Jerry Seinfeld  | Art Wolff          |           0.42 |          0.15  |
+| 82 | The Fire            | 5-May-94  | Larry Charles                | Tom Cherones       |           0.41 |          0.15   |
+| 54 | The Visa            | 27-Jan-93 | Peter Mehlman                | Tom Cherones       |           0.41 |          0.17  |
+| 93 | The Secretary       | 8-Dec-94  | Carol Leifer, Marjorie Gross | David Owen Trainor |           0.41 |          0.10 |
+
+## Episodes with Lowest Percentage of Positive lines
+
+|     | Title              | AirDate   | Writers                                | Director      |   Percent_Positive |   Percent_Negative |
+|----:|:-------------------|:----------|:---------------------------------------|:--------------|-------------------:|-------------------:|
+|  22 | The Parking Garage | 30-Oct-91 | Larry David                            | Tom Cherones  |           0.21 |           0.18 |
+|  16 | The Busboy         | 26-Jun-91 | Larry David, Jerry Seinfeld            | Tom Cherones  |           0.21 |           0.18 |
+| 171 | The Maid           | 30-Apr-98 | Alec Berg, David Mandel, Jeff Schaffer | Andy Ackerman |           0.23 |           0.17  |
+|  88 | The Chinese Woman  | 13-Oct-94 | Peter Mehlman                          | Andy Ackerman |           0.23 |           0.18  |
+|  39 | The Keys           | 6-May-92  | Larry Charles                          | Tom Cherones  |           0.24 |           0.18 |
+
+
+## Tying this all together
+In order to cohesively combine all of the above analysis, I thought it'd be fun to take a look at one of my favorite episodes, and see how it looks with respect to topic modeling and sentiment analysis. 
+
+Epside name: **"The Summer of George"**
+
+|     | Title              | AirDate   | Writers                                | Director      |   Percent_Positive |   Percent_Negative |
+|----:|:-------------------|:----------|:---------------------------------------|:--------------|-------------------:|-------------------:|
+|Sklearn Topic|5 |:----------|:---------------------------------------|:--------------|-------------------:|-------------------:|
+
 
 
 [Back to Top](#Table-of-Contents)
@@ -199,3 +244,18 @@ Contrast this with trying to predict a word using the N words before that word, 
 - 
 
 [Back to Top](#Table-of-Contents)
+
+
+```
+jerry: hi, how's your day going today, what is the deal?
+
+george: yeah. 
+
+george: i dont know. its not easy so up. 
+
+jerry: i dont have to eat. 
+
+george: i gotta go to the lost battle. 
+
+jerry: why does he do t
+```

@@ -29,7 +29,7 @@ class SklearnTopicModeler(object):
     '''
     Uses sklearn LDA to model topics within the Seinfeld script corpus.
     This should be easily generalizable to any corpus of documents.
-    Tokenized to tf matrices using sklearn's CountVectorizer 
+    Tokenized to tf matrices using sklearn's CountVectorizer. 
     '''
     def __init__(self, corpus, df_docs_by_ep):
         self.corpus = corpus
@@ -38,7 +38,8 @@ class SklearnTopicModeler(object):
         self.titles = df_docs_by_ep.Title.values
         self.writers = df_docs_by_ep.Writers.values
         self.seasons = df_docs_by_ep.Season.values
-
+        
+        # dataframe of documents (scripts) by episode
         self.df_docs_by_ep = df_docs_by_ep
 
     def clean_vectorize(self):
@@ -67,7 +68,7 @@ class SklearnTopicModeler(object):
         self.feature_names = self.vectorizer.get_feature_names() 
 
     def fit_LDA(self, num_topics=10):
-        # default to num_topics = 10 unless uses changes. 
+        # default to num_topics = 10 unless user changes. 
         # 10 produced really interesting results.
 
         self.num_topics = num_topics
