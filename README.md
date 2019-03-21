@@ -218,19 +218,19 @@ Jerry is offered two free tickets from New York City to Hollywood to appear on T
 In order to cohesively combine all of the above analysis, I thought it'd be fun to take a look at one of my favorite episodes, and see how it looks with respect to topic modeling and sentiment analysis. 
 
 Epside name: **"The Summer of George"**
-- Season: 8
-- Writers: Alec Berg, Jeff Schaffer
-- Synopsis: George discovers he has a severance package from the New York Yankees that should last him about 3 months, so he decides that he's going to take full advantage of 3 months off and become very active. However, instead of living a very active lifestyle as he'd planned, George becomes extremely lazy. He never changes out of his pajamas, and feels too weak to even come to Jerry's apartment, asking Jerry, Elaine and Kramer to instead visit him or talking to Jerry on the phone to know what's going on over at his apartment.
-- Dominant Topic using sklearn: 1 (general episodes)
+- **Season:** 8
+- **Writers:** Alec Berg, Jeff Schaffer
+- **Synopsis:** George discovers he has a severance package from the New York Yankees that should last him about 3 months, so he decides that he's going to take full advantage of 3 months off and become very active. However, instead of living a very active lifestyle as he'd planned, George becomes extremely lazy. He never changes out of his pajamas, and feels too weak to even come to Jerry's apartment, asking Jerry, Elaine and Kramer to instead visit him or talking to Jerry on the phone to know what's going on over at his apartment.
+- **Dominant Topic using sklearn:** 1 (general episodes)
   - Keywords: "door, head, better, jerrys, long, hell, leave, thank, lot, guys"
-- Dominant Topic using Gensim/spaCy: 5 (general episodes)
+- **Dominant Topic using Gensim/spaCy:** 5 (general episodes)
   - Keywords: "door, break, door, break, walk, guess, apartment, turn, place, run, hell, room"
-- Dominant Topic using optimal topic model: 1 (general episodes)
+- **Dominant Topic using optimal topic model:** 1 (general episodes)
   - Keywords: "run, hell, turn, problem, wait, point, hold, help, even, door"
-- Positive Lines: 27%
-- Negative Lines: 17%
-- George Positive lines: 27%
-- George Negative lines: 12%
+- **Positive Lines:** 27%
+- **Negative Lines:** 17%
+- **George Positive lines:** 27%
+- **George Negative lines:** 12%
 
 Similar episodes using cosine pairwise distance: 
 
