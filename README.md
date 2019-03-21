@@ -235,13 +235,12 @@ Epside name: **"The Summer of George"**
 Similar episodes using cosine pairwise distance: 
 
 | Title | Season | Writers | Synopsis | 
-| --- | --- | --- | --- | --- | --- | --- | --- |
+| --- | --- | --- | --- | 
 | The Barber    | 5 | Andy Robin | At a job interview, George's interviewer, Mr. Tuttle, is cut off mid-sentence by an important telephone call, and sends George away without saying whether he has been hired or not. Mr. Tuttle told George that one of the things that make George such an attractive hire is that he can "understand everything immediately", so George is afraid to call and ask for clarification. |
 |  The Suicide | 3 | Tom Leopold  | After his neighbor Martin tries to commit suicide and ends up in a coma, Jerry is hit on by his girlfriend, Gina. Elaine and George visit a psychic at her apartment, who warns George to cancel his vacation to the Cayman Islands. When Elaine rebukes her for smoking while pregnant, the psychic kicks them out before telling George why he should cancel.|
 | The Burning | 9 | Jennifer Crittenden  | At the coffee shop, George laments to Jerry about losing respect at a project meeting led by Mr. Kruger after following a good suggestion with a bad joke. Jerry suggests that George use the Vegas showmanship trick of leaving the room after a comedic high note. |
 | The Fusilli Jerry | 6 | Marjorie Gross | Kramer goes to the Department of Motor Vehicles for his new license plate. To his surprise, the plate reads "ASSMAN". He suspects that the plate was meant for a proctologist, and uses this theory to his advantage, by parking in a "Doctors Only" spot when he goes to pick up Estelle. The plate also scores him cat calls from passing drivers, and a date with a big-bottomed woman named Sally.|
 | The Good Samaritan| 3 | Peter Mehlman | Jerry witnesses a hit-and-run driver hitting another car. He is on the car phone with Elaine, who tells him he has to go after the driver. He does, but when the driver steps out he sees that she is a beautiful woman named Angela (played by Melinda McGraw) and decides to date her. Jerry lies to Elaine, saying he pursued the driver into Queens and intimidated him with karate moves. |
-
 
 [Back to Top](#Table-of-Contents)
 
@@ -257,7 +256,8 @@ For my first model, I am using the following parameters:
 - Number of neurons in that layer: 228
 
 I realized through trial and error that much of the difficulty in creating an LSTM model is in vectorizing the text into X and y values.
-Here is an example of how I am segmenting the text for the initial character-based LSTM model:
+Below shows a few examples of how I am segmenting the text into sequences and chracters to predict for the initial character-based LSTM model.
+
 ![](images/seq_pred.png)
 
 This results in the following X (sequence) and y (target) matrices:
@@ -303,13 +303,15 @@ Seed Text:
 george: all right, that's enough. i gotta go home and take a . 
 
 Predicted Dialogue:
-george: all right, that's enough. i gotta go home and take at this couch with a problem put the elevator in from got over there right now. 
+george: all right, that's enough. i gotta go home and take at this couch with a problem put the elevator 
+in from got over there right now. 
 
 jerry: you can i tester. 
 
 jerry: what was the car? 
 
-george: hes a persot. i hate the dryer sellised in the bitco moving out with this problem to get the lobby tickets to the eggees to come to play should see is we have a lot of here. 
+george: hes a persot. i hate the dryer sellised in the bitco moving out with this problem to get the lobby 
+tickets to the eggees to come to play should see is we have a lot of here. 
 
 jerry: so what i do? i love her
 ```
