@@ -247,13 +247,16 @@ Similar episodes using cosine pairwise distance:
 # Text Generation
 While I haven't done much with text generation yet, I have been looking into several options for my model, and will most likely use a LSTM RNN as my final model. There are quite a few different methodologies that can be applied when creating these types of models, and the three main ways to generate text are character-based, word-based, and word-vector based. In a character-based model, the prediction happens one character at a time, with the neural network inputs being the sequence of characters before the character being predicted. This allows for the number of potential predictions (y-values) to be quite small, in that it's only: `letters in the alphabet + digits 0-9 + punctuation`.
 
-For my first model, I am using the following parameters:
-- Window size: sequence of 60 characters, predict the 61st
-- Number of potential alphanumeric characters: 50 (letters in the alphabet + digits 0-9 + punctuation)
-- Number of alphanumeric characters used to create X and y values: 100,000
-- End up with an X matrix that is (99,940 x 60 x 50) and a y matrix that is (99,940 x 50)
-- Number of LSTM layers: 1
-- Number of neurons in that layer: 228
+For my first model, I used the following parameters:
+- **Window size:** sequence of 60 characters, predict the 61st
+- **Potential alphanumeric characters:** 50 (letters in the alphabet + digits 0-9 + punctuation)
+- **Total Alphanumeric characters** used to create X and y values: 100,000
+- **X matrix size**: (99,940 x 60 x 50)
+- **y matrix size**: (99,940 x 50)
+- **LSTM layers:** 1
+- **Neurons in that layer:** 228
+- **Total Epochs:** 20
+- **Best accuracy:** Train: 71% Test: 62% 
 
 I realized through trial and error that much of the difficulty in creating an LSTM model is in vectorizing the text into X and y values.
 Below shows a few examples of how I am segmenting the text into sequences and chracters to predict for the initial character-based LSTM model.
