@@ -1,5 +1,5 @@
 ![](images/header.png)
-# A Capstone about "Nothing"
+# A Capstone About "Nothing"
 Capstone Project for Galvanize Data Science Immersive 
 
 by Matt Devor
@@ -186,13 +186,13 @@ The chart below shows how each main character's sentiment changes over the seaso
 
 ##  Episodes with the Highest Percentage of Negative Lines
 
-|   Season - ADD  | Title             | AirDate   | Writers                     | Director      |   Percent Positive |   Percent Negative |
+|   Season  | Title             | AirDate   | Writers                     | Director      |   Percent Positive |   Percent Negative |
 |----:|:------------------|:----------|:----------------------------|:--------------|-------------------:|-------------------:|
-|   5 | The Ex-Girlfriend | 16-Jan-91 | Larry David, Jerry Seinfeld | Tom Cherones  |           0.32 |           0.25  |
-|   6 | The Pony Remark   | 30-Jan-91 | Larry David, Jerry Seinfeld | Tom Cherones  |           0.28     |           0.24     |
-| 134 | The Little Kicks  | 10-Oct-96 | Spike Feresten              | Andy Ackerman |           0.29 |           0.23 |
-|  14 | The Baby Shower   | 16-May-91 | Larry Charles               | Tom Cherones  |           0.24 |           0.23  |
-|   7 | The Jacket        | 6-Feb-91  | Larry David, Jerry Seinfeld | Tom Cherones  |           0.29 |           0.23 |
+|   2 | The Ex-Girlfriend | 16-Jan-91 | Larry David, Jerry Seinfeld | Tom Cherones  |           0.32 |           0.25  |
+|   2 | The Pony Remark   | 30-Jan-91 | Larry David, Jerry Seinfeld | Tom Cherones  |           0.28     |           0.24     |
+|   8 | The Little Kicks  | 10-Oct-96 | Spike Feresten              | Andy Ackerman |           0.29 |           0.23 |
+|   2 | The Baby Shower   | 16-May-91 | Larry Charles               | Tom Cherones  |           0.24 |           0.23  |
+|   2 | The Jacket        | 6-Feb-91  | Larry David, Jerry Seinfeld | Tom Cherones  |           0.29 |           0.23 |
 
 **Synopsis for "The Ex-Girlfriend":**
 
@@ -200,13 +200,13 @@ George wants to break up with his girlfriend Marlene, whose tendency to drag out
 
 ## Episodes with Highest Percentage of Positive lines
 
-|    | Title               | AirDate   | Writers                      | Director           |   Percent Positive |   Percent Negative |
+|  Season  | Title               | AirDate   | Writers                      | Director           |   Percent Positive |   Percent Negative |
 |---:|:--------------------|:----------|:-----------------------------|:-------------------|-------------------:|-------------------:|
-| 40 | The Trip (1)        | 12-Aug-92 | Larry Charles                | Tom Cherones       |           0.42 |          0.12  |
-|  0 | Good News, Bad News | 5-Jul-89  | Larry David, Jerry Seinfeld  | Art Wolff          |           0.42 |          0.15  |
-| 82 | The Fire            | 5-May-94  | Larry Charles                | Tom Cherones       |           0.41 |          0.15  |
-| 54 | The Visa            | 27-Jan-93 | Peter Mehlman                | Tom Cherones       |           0.41 |          0.17  |
-| 93 | The Secretary       | 8-Dec-94  | Carol Leifer, Marjorie Gross | David Owen Trainor |           0.41 |          0.10 |
+| 4 | The Trip (1)        | 12-Aug-92 | Larry Charles                | Tom Cherones       |           0.42 |          0.12  |
+|  1 | Good News, Bad News | 5-Jul-89  | Larry David, Jerry Seinfeld  | Art Wolff          |           0.42 |          0.15  |
+|  5 | The Fire            | 5-May-94  | Larry Charles                | Tom Cherones       |           0.41 |          0.15  |
+| 4 | The Visa            | 27-Jan-93 | Peter Mehlman                | Tom Cherones       |           0.41 |          0.17  |
+| 6 | The Secretary       | 8-Dec-94  | Carol Leifer, Marjorie Gross | David Owen Trainor |           0.41 |          0.10 |
 
 **Synopsis for "The Trip":** 
 
